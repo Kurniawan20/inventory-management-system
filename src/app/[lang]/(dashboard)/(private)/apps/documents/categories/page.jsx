@@ -12,7 +12,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 
 // Component Imports
-import DocumentCategories from 'src/views/apps/documents/DocumentCategories'
+import DocumentCategories from '@/views/apps/documents/DocumentCategories'
 
 const DocumentCategoriesPage = () => {
   const router = useRouter()

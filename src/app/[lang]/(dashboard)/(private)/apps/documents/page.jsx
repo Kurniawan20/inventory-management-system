@@ -41,10 +41,10 @@ import Divider from '@mui/material/Divider'
 import Badge from '@mui/material/Badge'
 
 // Component Imports
-import DocumentUpload from 'src/views/apps/documents/DocumentUpload'
-import DocumentList from 'src/views/apps/documents/DocumentList'
-import DocumentPreview from 'src/views/apps/documents/DocumentPreview'
-import DocumentCategories from 'src/views/apps/documents/DocumentCategories'
+import DocumentUpload from '@/views/apps/documents/DocumentUpload'
+import DocumentList from '@/views/apps/documents/DocumentList'
+import DocumentPreview from '@/views/apps/documents/DocumentPreview'
+import DocumentCategories from '@/views/apps/documents/DocumentCategories'
 
 const DocumentManagementPage = () => {
   const router = useRouter()
