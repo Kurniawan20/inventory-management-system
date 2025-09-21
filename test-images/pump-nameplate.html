@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSB Pump Nameplate</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .nameplate {
+            width: 400px;
+            height: 300px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+            border: 3px solid #666;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            position: relative;
+            margin: 20px auto;
+        }
+        .nameplate::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+        .header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+            color: #222;
+        }
+        .label {
+            font-weight: bold;
+            min-width: 120px;
+        }
+        .value {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        .specs {
+            margin-top: 20px;
+            border-top: 1px solid #999;
+            padding-top: 15px;
+        }
+        .warning {
+            background: #ffeb3b;
+            color: #333;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            margin-top: 15px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nameplate">
+        <div class="header">KSB CENTRIFUGAL PUMP</div>
+        
+        <div class="info-row">
+            <span class="label">MODEL:</span>
+            <span class="value">ETANORM-G 065-050-200</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">SERIAL NO:</span>
+            <span class="value">KSB-2023-P-45678</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">YEAR:</span>
+            <span class="value">2023</span>
+        </div>
+        
+        <div class="specs">
+            <div class="info-row">
+                <span class="label">POWER:</span>
+                <span class="value">75 kW</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">VOLTAGE:</span>
+                <span class="value">380V / 50Hz</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">CAPACITY:</span>
+                <span class="value">500 L/min</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">PRESSURE:</span>
+                <span class="value">16 bar</span>
+            </div>
+        </div>
+        
+        <div class="warning">
+            AUTHORIZED PERSONNEL ONLY
+        </div>
+    </div>
+    
+    <p style="text-align: center; margin-top: 20px; color: #666;">
+        Right-click and "Save Image As" to save this nameplate for OCR testing
+    </p>
+</body>
+</html>
