@@ -97,7 +97,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             label="Asset Valuation"
             icon={<i className='ri-money-dollar-circle-line' />}
           >
-            <MenuItem href={`/${locale}/apps/assets/valuation/depreciation`}>Depreciation</MenuItem>
+            <MenuItem href={`/${locale}/apps/assets/depreciation`}>Depreciation</MenuItem>
+            <MenuItem href={`/${locale}/apps/assets/depreciation/reports`}>Depreciation Reports</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/valuation/adjustment`}>Value Adjustment</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/valuation/reports`}>Financial Reports</MenuItem>
           </SubMenu>
