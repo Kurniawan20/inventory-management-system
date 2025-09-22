@@ -119,6 +119,21 @@ export const authOptions = {
       }
 
       return session
+    },
+    async redirect({ url, baseUrl }) {
+      // Redirect to assets dashboard after login
+      if (url === baseUrl) {
+        return `${baseUrl}/en/dashboards/assets`
+      }
+      // Allow relative callback URLs
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`
+      }
+      // Allow callback URLs on the same origin
+      if (new URL(url).origin === baseUrl) {
+        return url
+      }
+      return `${baseUrl}/en/dashboards/assets`
     }
   }
 }

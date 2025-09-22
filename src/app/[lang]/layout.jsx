@@ -19,8 +19,8 @@ import '@/app/globals.css'
 import '@assets/iconify-icons/generated-icons.css'
 
 export const metadata = {
-  title: 'Materialize - Material Next.js Admin Template',
-  description: 'Materialize - Material Next.js Admin Template'
+  title: 'Effiework - Asset Management System',
+  description: 'Effiework - Comprehensive Asset and Inventory Management System'
 }
 
 const RootLayout = ({ children, params }) => {

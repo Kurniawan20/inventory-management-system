@@ -62,16 +62,6 @@ const Logo = ({ color }) => {
   return (
     <div className='flex items-center min-bs-[24px]'>
       <MaterializeLogo />
-      <LogoText
-        color={color}
-        ref={logoTextRef}
-        isHovered={isHovered}
-        isCollapsed={layout === 'collapsed'}
-        transitionDuration={transitionDuration}
-        isBreakpointReached={isBreakpointReached}
-      >
-        {themeConfig.templateName}
-      </LogoText>
     </div>
   )
 }
