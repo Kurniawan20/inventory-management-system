@@ -27,6 +27,7 @@ import classnames from 'classnames'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
+import EmployeeIdModal from '@components/dialogs/EmployeeIdModal'
 
 // Config Imports
 import themeConfig from '@configs/themeConfig'
@@ -51,6 +52,8 @@ const Login = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [errorState, setErrorState] = useState(null)
+  const [employeeModalOpen, setEmployeeModalOpen] = useState(false)
+  const [selectedShortcut, setSelectedShortcut] = useState(null)
 
   // Vars
   const darkImg = '/images/pages/auth-v2-mask-1-dark.png'
@@ -109,6 +112,37 @@ const Login = ({ mode }) => {
         setErrorState(error)
       }
     }
+  }
+
+  // Shortcut handlers
+  const handleShortcutClick = (shortcutType) => {
+    setSelectedShortcut(shortcutType)
+    setEmployeeModalOpen(true)
+  }
+
+  const handleEmployeeIdSubmit = async (employeeId) => {
+    // Store employee ID in session storage for the shortcut session
+    sessionStorage.setItem('shortcutEmployeeId', employeeId)
+    sessionStorage.setItem('shortcutTimestamp', Date.now().toString())
+    
+    // Navigate to the selected shortcut page
+    const routes = {
+      request: '/shortcuts/assets/request',
+      tracking: '/shortcuts/assets/tracking',
+      return: '/shortcuts/assets/return'
+    }
+    
+    if (selectedShortcut && routes[selectedShortcut]) {
+      router.push(getLocalizedUrl(routes[selectedShortcut], locale))
+    }
+    
+    setEmployeeModalOpen(false)
+    setSelectedShortcut(null)
+  }
+
+  const handleModalClose = () => {
+    setEmployeeModalOpen(false)
+    setSelectedShortcut(null)
   }
 
   return (
@@ -239,8 +273,58 @@ const Login = ({ mode }) => {
           >
             Sign in with Google
           </Button>
+          
+          <Divider className='gap-3'>Quick Access</Divider>
+          
+          <div className='flex flex-col gap-3'>
+            <Typography variant='body2' color='text.secondary' className='text-center'>
+              Access common features directly:
+            </Typography>
+            <div className='flex flex-col gap-2'>
+              <Button
+                variant='outlined'
+                color='primary'
+                startIcon={<i className='ri-file-add-line' />}
+                onClick={() => handleShortcutClick('request')}
+                className='justify-start'
+              >
+                Permintaan Aset (Asset Request)
+              </Button>
+              <Button
+                variant='outlined'
+                color='primary'
+                startIcon={<i className='ri-map-pin-line' />}
+                onClick={() => handleShortcutClick('tracking')}
+                className='justify-start'
+              >
+                Tracking Aset (Asset Tracking)
+              </Button>
+              <Button
+                variant='outlined'
+                color='primary'
+                startIcon={<i className='ri-arrow-go-back-line' />}
+                onClick={() => handleShortcutClick('return')}
+                className='justify-start'
+              >
+                Pengembalian Aset (Asset Return)
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Employee ID Modal */}
+      <EmployeeIdModal
+        open={employeeModalOpen}
+        onClose={handleModalClose}
+        onSubmit={handleEmployeeIdSubmit}
+        title="Employee Verification Required"
+        description={`Please enter your Employee ID to access ${
+          selectedShortcut === 'request' ? 'Asset Request' :
+          selectedShortcut === 'tracking' ? 'Asset Tracking' :
+          selectedShortcut === 'return' ? 'Asset Return' : 'the feature'
+        }`}
+      />
     </div>
   )
 }
