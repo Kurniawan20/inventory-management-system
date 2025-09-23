@@ -56,8 +56,7 @@ const Login = ({ mode }) => {
   const [selectedShortcut, setSelectedShortcut] = useState(null)
 
   // Vars
-  const darkImg = '/images/pages/auth-v2-mask-1-dark.png'
-  const lightImg = '/images/pages/auth-v2-mask-1-light.png'
+  const pertaminaBg = '/images/pages/pertamina-login-bg.jpg'
   const darkIllustration = '/images/illustrations/auth/v2-login-dark.png'
   const lightIllustration = '/images/illustrations/auth/v2-login-light.png'
   const borderedDarkIllustration = '/images/illustrations/auth/v2-login-dark-border.png'
@@ -81,7 +80,8 @@ const Login = ({ mode }) => {
     }
   })
 
-  const authBackground = useImageVariant(mode, lightImg, darkImg)
+  // Use the custom Pertamina background image for both light and dark modes
+  const authBackground = pertaminaBg
 
   const characterIllustration = useImageVariant(
     mode,
@@ -155,17 +155,14 @@ const Login = ({ mode }) => {
           }
         )}
       >
-        <div className='pli-6 max-lg:mbs-40 lg:mbe-24'>
-          <img
-            src={characterIllustration}
-            alt='character-illustration'
-            className='max-bs-[673px] max-is-full bs-auto'
-          />
-        </div>
-        <img src={authBackground} className='absolute bottom-[4%] z-[-1] is-full max-md:hidden' />
+        <img 
+          src={authBackground} 
+          alt='Pertamina Background'
+          className='absolute inset-0 z-[-1] w-full h-full object-cover max-md:hidden' 
+        />
       </div>
       <div className='flex justify-center items-center bs-full bg-backgroundPaper !min-is-full p-6 md:!min-is-[unset] md:p-12 md:is-[480px]'>
-        <div className='absolute block-start-5 sm:block-start-[38px] inline-start-6 sm:inline-start-[38px]'>
+        <div className='absolute block-start-5 sm:block-start-[38px] inline-start-6 sm:inline-start-[38px] bg-white rounded-lg p-3 shadow-md'>
           <Logo />
         </div>
         <div className='flex flex-col gap-5 is-full sm:is-auto md:is-full sm:max-is-[400px] md:max-is-[unset]'>

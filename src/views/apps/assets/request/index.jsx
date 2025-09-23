@@ -27,18 +27,269 @@ import { object, string, pipe, nonEmpty, minLength } from 'valibot'
 
 const schema = object({
   assetName: pipe(string(), nonEmpty('Asset name is required')),
+  primaryCategory: pipe(string(), nonEmpty('Primary category is required')),
+  subCategory: pipe(string(), nonEmpty('Sub category is required')),
   assetType: pipe(string(), nonEmpty('Asset type is required')),
+  brand: pipe(string(), nonEmpty('Brand/Manufacturer is required')),
+  model: pipe(string(), nonEmpty('Model/Specification is required')),
   quantity: pipe(string(), nonEmpty('Quantity is required')),
+  unitPrice: pipe(string(), nonEmpty('Estimated unit price is required')),
+  totalBudget: pipe(string(), nonEmpty('Total budget is required')),
   priority: pipe(string(), nonEmpty('Priority is required')),
   department: pipe(string(), nonEmpty('Department is required')),
-  justification: pipe(string(), nonEmpty('Justification is required'), minLength(10, 'Please provide detailed justification')),
-  expectedDate: pipe(string(), nonEmpty('Expected date is required'))
+  requestedFor: pipe(string(), nonEmpty('Requested for (person/project) is required')),
+  location: pipe(string(), nonEmpty('Installation/Usage location is required')),
+  supplier: string(),
+  warrantyPeriod: string(),
+  maintenanceRequirement: string(),
+  justification: pipe(string(), nonEmpty('Justification is required'), minLength(20, 'Please provide detailed justification (minimum 20 characters)')),
+  expectedDate: pipe(string(), nonEmpty('Expected date is required')),
+  urgencyReason: string(),
+  technicalSpecs: string(),
+  complianceRequirements: string(),
+  environmentalConsiderations: string()
 })
 
 const AssetRequestView = () => {
+  // Define asset types array first
+  const assetTypes = [
+    'Fixed Asset',
+    'Mobile Asset',
+    'Consumable',
+    'Tool & Equipment',
+    'Infrastructure',
+    'Software License',
+    'Intangible Asset'
+  ]
+
+  // Mapping sub categories to appropriate asset types
+  const subCategoryToAssetTypes = {
+    // Production Equipment
+    'Pumps & Compressors': ['Fixed Asset', 'Mobile Asset'],
+    'Heat Exchangers': ['Fixed Asset'],
+    'Reactors': ['Fixed Asset'],
+    'Distillation Columns': ['Fixed Asset'],
+    'Turbines': ['Fixed Asset'],
+    'Generators': ['Fixed Asset', 'Mobile Asset'],
+    'Motors': ['Fixed Asset', 'Mobile Asset'],
+    'Mixers & Agitators': ['Fixed Asset'],
+    'Separators': ['Fixed Asset'],
+    'Filters & Strainers': ['Fixed Asset', 'Consumable'],
+    'Pressure Vessels': ['Fixed Asset'],
+    'Cooling Towers': ['Fixed Asset'],
+
+    // Processing Units
+    'Crude Distillation Unit': ['Fixed Asset'],
+    'Catalytic Cracking Unit': ['Fixed Asset'],
+    'Hydroprocessing Unit': ['Fixed Asset'],
+    'Reforming Unit': ['Fixed Asset'],
+    'Alkylation Unit': ['Fixed Asset'],
+    'Isomerization Unit': ['Fixed Asset'],
+    'Hydrotreating Unit': ['Fixed Asset'],
+    'Coking Unit': ['Fixed Asset'],
+    'Sulfur Recovery Unit': ['Fixed Asset'],
+    'Hydrogen Production Unit': ['Fixed Asset'],
+    'Amine Treatment Unit': ['Fixed Asset'],
+    'Merox Treatment Unit': ['Fixed Asset'],
+
+    // Storage & Tanks
+    'Crude Oil Tanks': ['Fixed Asset'],
+    'Product Storage Tanks': ['Fixed Asset'],
+    'Chemical Storage': ['Fixed Asset'],
+    'Gas Storage': ['Fixed Asset'],
+    'Underground Storage': ['Fixed Asset'],
+    'Floating Roof Tanks': ['Fixed Asset'],
+    'Fixed Roof Tanks': ['Fixed Asset'],
+    'Spherical Tanks': ['Fixed Asset'],
+    'Horizontal Tanks': ['Fixed Asset'],
+    'Day Tanks': ['Fixed Asset'],
+    'Buffer Tanks': ['Fixed Asset'],
+    'Cryogenic Storage': ['Fixed Asset'],
+
+    // Transportation
+    'Pipelines': ['Infrastructure'],
+    'Tanker Trucks': ['Mobile Asset'],
+    'Rail Cars': ['Mobile Asset'],
+    'Marine Vessels': ['Mobile Asset'],
+    'Conveyor Systems': ['Fixed Asset'],
+    'Loading Arms': ['Fixed Asset'],
+    'Metering Systems': ['Fixed Asset'],
+    'Transfer Pumps': ['Fixed Asset', 'Mobile Asset'],
+    'Valves & Actuators': ['Fixed Asset', 'Tool & Equipment'],
+    'Pipeline Inspection Equipment': ['Tool & Equipment', 'Mobile Asset'],
+    'Terminal Equipment': ['Fixed Asset'],
+    'Jetty Equipment': ['Fixed Asset'],
+
+    // Safety Equipment
+    'Fire Protection Systems': ['Fixed Asset'],
+    'Gas Detection Systems': ['Fixed Asset'],
+    'Emergency Shutdown Systems': ['Fixed Asset'],
+    'Personal Protective Equipment': ['Consumable', 'Tool & Equipment'],
+    'Safety Valves': ['Fixed Asset', 'Tool & Equipment'],
+    'Fire Extinguishers': ['Tool & Equipment', 'Mobile Asset'],
+    'Safety Showers & Eyewash': ['Fixed Asset'],
+    'Breathing Apparatus': ['Tool & Equipment'],
+    'Fall Protection': ['Tool & Equipment'],
+    'Confined Space Equipment': ['Tool & Equipment'],
+    'Emergency Lighting': ['Fixed Asset'],
+    'Evacuation Equipment': ['Tool & Equipment'],
+
+    // IT & Telecommunications
+    'Servers & Storage': ['Fixed Asset'],
+    'Network Equipment': ['Fixed Asset'],
+    'Workstations & Computers': ['Fixed Asset', 'Mobile Asset'],
+    'Radio Communication Systems': ['Fixed Asset', 'Mobile Asset'],
+    'Satellite Communication': ['Fixed Asset'],
+    'PABX & Telephone Systems': ['Fixed Asset'],
+    'CCTV & Surveillance': ['Fixed Asset'],
+    'Access Control Systems': ['Fixed Asset'],
+    'Industrial Control Systems': ['Fixed Asset'],
+    'SCADA Equipment': ['Fixed Asset'],
+    'Data Center Infrastructure': ['Infrastructure'],
+    'Mobile Devices': ['Mobile Asset'],
+
+    // Office Equipment
+    'Furniture & Fixtures': ['Fixed Asset'],
+    'Printers & Scanners': ['Fixed Asset'],
+    'Photocopiers': ['Fixed Asset'],
+    'Meeting Room Equipment': ['Fixed Asset'],
+    'Audiovisual Systems': ['Fixed Asset'],
+    'Office Appliances': ['Fixed Asset'],
+    'Filing & Storage Systems': ['Fixed Asset'],
+    'Mail Room Equipment': ['Fixed Asset'],
+    'Security Systems': ['Fixed Asset'],
+    'Time & Attendance Systems': ['Fixed Asset'],
+    'Shredders & Disposal': ['Fixed Asset'],
+    'Office Supplies': ['Consumable'],
+
+    // Utilities
+    'Power Generation': ['Fixed Asset'],
+    'Power Distribution': ['Infrastructure'],
+    'Water Treatment': ['Fixed Asset'],
+    'Wastewater Treatment': ['Fixed Asset'],
+    'Steam Generation': ['Fixed Asset'],
+    'Compressed Air Systems': ['Fixed Asset'],
+    'HVAC Systems': ['Fixed Asset'],
+    'Cooling Water Systems': ['Fixed Asset'],
+    'Fuel Gas Systems': ['Fixed Asset'],
+    'Nitrogen Generation': ['Fixed Asset'],
+    'Instrument Air Systems': ['Fixed Asset'],
+    'Flare Systems': ['Fixed Asset'],
+
+    // Maintenance Tools
+    'Hand Tools': ['Tool & Equipment'],
+    'Power Tools': ['Tool & Equipment'],
+    'Calibration Equipment': ['Tool & Equipment'],
+    'Welding Equipment': ['Tool & Equipment'],
+    'Machining Tools': ['Tool & Equipment'],
+    'Lifting Equipment': ['Tool & Equipment'],
+    'Testing Equipment': ['Tool & Equipment'],
+    'Alignment Tools': ['Tool & Equipment'],
+    'Condition Monitoring': ['Tool & Equipment'],
+    'Vibration Analysis': ['Tool & Equipment'],
+    'Thermography Equipment': ['Tool & Equipment'],
+    'Ultrasonic Testing': ['Tool & Equipment'],
+
+    // Laboratory Equipment
+    'Analytical Instruments': ['Fixed Asset'],
+    'Sample Preparation': ['Fixed Asset', 'Tool & Equipment'],
+    'Chromatography': ['Fixed Asset'],
+    'Spectroscopy': ['Fixed Asset'],
+    'Physical Testing': ['Fixed Asset', 'Tool & Equipment'],
+    'Environmental Testing': ['Fixed Asset', 'Tool & Equipment'],
+    'Calibration Standards': ['Tool & Equipment'],
+    'Lab Furniture': ['Fixed Asset'],
+    'Safety Equipment': ['Tool & Equipment', 'Fixed Asset'],
+    'Storage & Refrigeration': ['Fixed Asset'],
+    'Water Purification': ['Fixed Asset'],
+    'Lab Automation': ['Fixed Asset'],
+
+    // Electrical Equipment
+    'Transformers': ['Fixed Asset'],
+    'Switchgear': ['Fixed Asset'],
+    'Motor Control Centers': ['Fixed Asset'],
+    'UPS Systems': ['Fixed Asset'],
+    'Generators & Alternators': ['Fixed Asset', 'Mobile Asset'],
+    'Batteries & Chargers': ['Fixed Asset'],
+    'Power Distribution Panels': ['Fixed Asset'],
+    'Lighting Systems': ['Fixed Asset'],
+    'Grounding Systems': ['Fixed Asset'],
+    'Cathodic Protection': ['Fixed Asset'],
+    'Variable Frequency Drives': ['Fixed Asset'],
+    'Power Quality Monitoring': ['Fixed Asset', 'Tool & Equipment'],
+
+    // Instrumentation
+    'Pressure Instruments': ['Fixed Asset', 'Tool & Equipment'],
+    'Temperature Instruments': ['Fixed Asset', 'Tool & Equipment'],
+    'Flow Instruments': ['Fixed Asset', 'Tool & Equipment'],
+    'Level Instruments': ['Fixed Asset', 'Tool & Equipment'],
+    'Analytical Instruments': ['Fixed Asset'],
+    'Control Valves': ['Fixed Asset'],
+    'Programmable Logic Controllers': ['Fixed Asset'],
+    'Distributed Control Systems': ['Fixed Asset'],
+    'Field Transmitters': ['Fixed Asset'],
+    'Signal Converters': ['Fixed Asset'],
+    'Junction Boxes': ['Fixed Asset'],
+    'Instrument Panels': ['Fixed Asset'],
+
+    // Environmental Control
+    'Emission Monitoring': ['Fixed Asset'],
+    'Effluent Treatment': ['Fixed Asset'],
+    'Spill Containment': ['Fixed Asset', 'Tool & Equipment'],
+    'Waste Management': ['Fixed Asset', 'Tool & Equipment'],
+    'Air Quality Control': ['Fixed Asset'],
+    'Noise Control': ['Fixed Asset'],
+    'Dust Suppression': ['Fixed Asset'],
+    'VOC Recovery': ['Fixed Asset'],
+    'Groundwater Monitoring': ['Fixed Asset', 'Tool & Equipment'],
+    'Soil Remediation': ['Tool & Equipment'],
+    'Environmental Sampling': ['Tool & Equipment'],
+    'Meteorological Equipment': ['Fixed Asset'],
+
+    // Facility Infrastructure
+    'Buildings & Structures': ['Infrastructure'],
+    'Roads & Pavements': ['Infrastructure'],
+    'Fencing & Gates': ['Infrastructure'],
+    'Drainage Systems': ['Infrastructure'],
+    'Lighting Systems': ['Fixed Asset'],
+    'HVAC Systems': ['Fixed Asset'],
+    'Electrical Distribution': ['Infrastructure'],
+    'Water Supply': ['Infrastructure'],
+    'Sewage Systems': ['Infrastructure'],
+    'Fire Protection': ['Fixed Asset'],
+    'Security Systems': ['Fixed Asset'],
+    'Landscaping': ['Infrastructure'],
+
+    // Offshore Equipment
+    'Drilling Equipment': ['Fixed Asset', 'Mobile Asset'],
+    'Production Platforms': ['Infrastructure'],
+    'Subsea Equipment': ['Fixed Asset'],
+    'Floating Production Systems': ['Mobile Asset'],
+    'Mooring Systems': ['Fixed Asset'],
+    'Risers & Flowlines': ['Fixed Asset'],
+    'Wellheads': ['Fixed Asset'],
+    'Marine Loading Systems': ['Fixed Asset'],
+    'Offshore Cranes': ['Fixed Asset'],
+    'Helidecks': ['Infrastructure'],
+    'Living Quarters': ['Infrastructure'],
+    'Safety & Rescue Equipment': ['Tool & Equipment']
+  }
+
   const [employeeId, setEmployeeId] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [selectedPrimaryCategory, setSelectedPrimaryCategory] = useState('')
+  const [selectedSubCategory, setSelectedSubCategory] = useState('')
+  const [availableAssetTypes, setAvailableAssetTypes] = useState(assetTypes)
+
+  // Update available asset types when sub category changes
+  useEffect(() => {
+    if (selectedSubCategory && subCategoryToAssetTypes[selectedSubCategory]) {
+      setAvailableAssetTypes(subCategoryToAssetTypes[selectedSubCategory])
+    } else {
+      setAvailableAssetTypes(assetTypes)
+    }
+  }, [selectedSubCategory])
 
   const {
     control,
@@ -49,12 +300,27 @@ const AssetRequestView = () => {
     resolver: valibotResolver(schema),
     defaultValues: {
       assetName: '',
+      primaryCategory: '',
+      subCategory: '',
       assetType: '',
+      brand: '',
+      model: '',
       quantity: '1',
+      unitPrice: '',
+      totalBudget: '',
       priority: '',
       department: '',
+      requestedFor: '',
+      location: '',
+      supplier: '',
+      warrantyPeriod: '',
+      maintenanceRequirement: '',
       justification: '',
-      expectedDate: ''
+      expectedDate: '',
+      urgencyReason: '',
+      technicalSpecs: '',
+      complianceRequirements: '',
+      environmentalConsiderations: ''
     }
   })
 
@@ -90,14 +356,259 @@ const AssetRequestView = () => {
     }
   }
 
-  const assetTypes = [
-    'Computer & IT Equipment',
-    'Office Furniture',
-    'Vehicles',
-    'Machinery & Tools',
+  // Category data from asset registration form
+  const primaryCategories = [
+    'Production Equipment',
+    'Processing Units',
+    'Storage & Tanks',
+    'Transportation',
     'Safety Equipment',
-    'Communication Devices',
-    'Other'
+    'IT & Telecommunications',
+    'Office Equipment',
+    'Utilities',
+    'Maintenance Tools',
+    'Laboratory Equipment',
+    'Electrical Equipment',
+    'Instrumentation',
+    'Environmental Control',
+    'Facility Infrastructure',
+    'Offshore Equipment'
+  ]
+
+  const subCategories = {
+    'Production Equipment': [
+      'Pumps & Compressors',
+      'Heat Exchangers',
+      'Reactors',
+      'Distillation Columns',
+      'Turbines',
+      'Generators',
+      'Motors',
+      'Mixers & Agitators',
+      'Separators',
+      'Filters & Strainers',
+      'Pressure Vessels',
+      'Cooling Towers'
+    ],
+    'Processing Units': [
+      'Crude Distillation Unit',
+      'Catalytic Cracking Unit',
+      'Hydroprocessing Unit',
+      'Reforming Unit',
+      'Alkylation Unit',
+      'Isomerization Unit',
+      'Hydrotreating Unit',
+      'Coking Unit',
+      'Sulfur Recovery Unit',
+      'Hydrogen Production Unit',
+      'Amine Treatment Unit',
+      'Merox Treatment Unit'
+    ],
+    'Storage & Tanks': [
+      'Crude Oil Tanks',
+      'Product Storage Tanks',
+      'Chemical Storage',
+      'Gas Storage',
+      'Underground Storage',
+      'Floating Roof Tanks',
+      'Fixed Roof Tanks',
+      'Spherical Tanks',
+      'Horizontal Tanks',
+      'Day Tanks',
+      'Buffer Tanks',
+      'Cryogenic Storage'
+    ],
+    'Transportation': [
+      'Pipelines',
+      'Tanker Trucks',
+      'Rail Cars',
+      'Marine Vessels',
+      'Conveyor Systems',
+      'Loading Arms',
+      'Metering Systems',
+      'Transfer Pumps',
+      'Valves & Actuators',
+      'Pipeline Inspection Equipment',
+      'Terminal Equipment',
+      'Jetty Equipment'
+    ],
+    'Safety Equipment': [
+      'Fire Protection Systems',
+      'Gas Detection Systems',
+      'Emergency Shutdown Systems',
+      'Personal Protective Equipment',
+      'Safety Valves',
+      'Fire Extinguishers',
+      'Safety Showers & Eyewash',
+      'Breathing Apparatus',
+      'Fall Protection',
+      'Confined Space Equipment',
+      'Emergency Lighting',
+      'Evacuation Equipment'
+    ],
+    'IT & Telecommunications': [
+      'Servers & Storage',
+      'Network Equipment',
+      'Workstations & Computers',
+      'Radio Communication Systems',
+      'Satellite Communication',
+      'PABX & Telephone Systems',
+      'CCTV & Surveillance',
+      'Access Control Systems',
+      'Industrial Control Systems',
+      'SCADA Equipment',
+      'Data Center Infrastructure',
+      'Mobile Devices'
+    ],
+    'Office Equipment': [
+      'Furniture & Fixtures',
+      'Printers & Scanners',
+      'Photocopiers',
+      'Meeting Room Equipment',
+      'Audiovisual Systems',
+      'Office Appliances',
+      'Filing & Storage Systems',
+      'Mail Room Equipment',
+      'Security Systems',
+      'Time & Attendance Systems',
+      'Shredders & Disposal',
+      'Office Supplies'
+    ],
+    'Utilities': [
+      'Power Generation',
+      'Power Distribution',
+      'Water Treatment',
+      'Wastewater Treatment',
+      'Steam Generation',
+      'Compressed Air Systems',
+      'HVAC Systems',
+      'Cooling Water Systems',
+      'Fuel Gas Systems',
+      'Nitrogen Generation',
+      'Instrument Air Systems',
+      'Flare Systems'
+    ],
+    'Maintenance Tools': [
+      'Hand Tools',
+      'Power Tools',
+      'Calibration Equipment',
+      'Welding Equipment',
+      'Machining Tools',
+      'Lifting Equipment',
+      'Testing Equipment',
+      'Alignment Tools',
+      'Condition Monitoring',
+      'Vibration Analysis',
+      'Thermography Equipment',
+      'Ultrasonic Testing'
+    ],
+    'Laboratory Equipment': [
+      'Analytical Instruments',
+      'Sample Preparation',
+      'Chromatography',
+      'Spectroscopy',
+      'Physical Testing',
+      'Environmental Testing',
+      'Calibration Standards',
+      'Lab Furniture',
+      'Safety Equipment',
+      'Storage & Refrigeration',
+      'Water Purification',
+      'Lab Automation'
+    ],
+    'Electrical Equipment': [
+      'Transformers',
+      'Switchgear',
+      'Motor Control Centers',
+      'UPS Systems',
+      'Generators & Alternators',
+      'Batteries & Chargers',
+      'Power Distribution Panels',
+      'Lighting Systems',
+      'Grounding Systems',
+      'Cathodic Protection',
+      'Variable Frequency Drives',
+      'Power Quality Monitoring'
+    ],
+    'Instrumentation': [
+      'Pressure Instruments',
+      'Temperature Instruments',
+      'Flow Instruments',
+      'Level Instruments',
+      'Analytical Instruments',
+      'Control Valves',
+      'Programmable Logic Controllers',
+      'Distributed Control Systems',
+      'Field Transmitters',
+      'Signal Converters',
+      'Junction Boxes',
+      'Instrument Panels'
+    ],
+    'Environmental Control': [
+      'Emission Monitoring',
+      'Effluent Treatment',
+      'Spill Containment',
+      'Waste Management',
+      'Air Quality Control',
+      'Noise Control',
+      'Dust Suppression',
+      'VOC Recovery',
+      'Groundwater Monitoring',
+      'Soil Remediation',
+      'Environmental Sampling',
+      'Meteorological Equipment'
+    ],
+    'Facility Infrastructure': [
+      'Buildings & Structures',
+      'Roads & Pavements',
+      'Fencing & Gates',
+      'Drainage Systems',
+      'Lighting Systems',
+      'HVAC Systems',
+      'Electrical Distribution',
+      'Water Supply',
+      'Sewage Systems',
+      'Fire Protection',
+      'Security Systems',
+      'Landscaping'
+    ],
+    'Offshore Equipment': [
+      'Drilling Equipment',
+      'Production Platforms',
+      'Subsea Equipment',
+      'Floating Production Systems',
+      'Mooring Systems',
+      'Risers & Flowlines',
+      'Wellheads',
+      'Marine Loading Systems',
+      'Offshore Cranes',
+      'Helidecks',
+      'Living Quarters',
+      'Safety & Rescue Equipment'
+    ]
+  }
+
+  const locations = [
+    'Head Office - Jakarta',
+    'Refinery - Cilacap',
+    'Refinery - Balikpapan',
+    'Terminal - Tanjung Priok',
+    'Terminal - Belawan',
+    'Depot - Surabaya',
+    'Depot - Makassar',
+    'Field Office - Pekanbaru',
+    'Training Center - Cepu',
+    'Other Location'
+  ]
+
+  const warrantyPeriods = [
+    '6 months',
+    '1 year',
+    '2 years',
+    '3 years',
+    '5 years',
+    'Lifetime',
+    'No warranty'
   ]
 
   const priorities = [
@@ -158,6 +669,14 @@ const AssetRequestView = () => {
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={4}>
+                {/* Basic Asset Information */}
+                <Grid item xs={12}>
+                  <Typography variant='h6' className='mb-4 text-primary'>
+                    <i className='ri-information-line mr-2' />
+                    Basic Asset Information
+                  </Typography>
+                </Grid>
+
                 <Grid item xs={12} md={6}>
                   <Controller
                     name='assetName'
@@ -166,7 +685,7 @@ const AssetRequestView = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label='Asset Name'
+                        label='Asset Name *'
                         placeholder='Enter asset name or model'
                         error={!!errors.assetName}
                         helperText={errors.assetName?.message}
@@ -177,13 +696,79 @@ const AssetRequestView = () => {
 
                 <Grid item xs={12} md={6}>
                   <Controller
+                    name='primaryCategory'
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl fullWidth error={!!errors.primaryCategory}>
+                        <InputLabel>Primary Category *</InputLabel>
+                        <Select 
+                          {...field} 
+                          label='Primary Category *'
+                          onChange={(e) => {
+                            field.onChange(e)
+                            setSelectedPrimaryCategory(e.target.value)
+                            // Reset sub category when primary changes
+                            control._formValues.subCategory = ''
+                          }}
+                        >
+                          {primaryCategories.map((category) => (
+                            <MenuItem key={category} value={category}>
+                              {category}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {errors.primaryCategory && (
+                          <Typography variant='caption' color='error' className='ml-3 mt-1'>
+                            {errors.primaryCategory.message}
+                          </Typography>
+                        )}
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='subCategory'
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl fullWidth error={!!errors.subCategory} disabled={!selectedPrimaryCategory}>
+                        <InputLabel>Sub Category *</InputLabel>
+                        <Select 
+                          {...field} 
+                          label='Sub Category *'
+                          onChange={(e) => {
+                            field.onChange(e)
+                            setSelectedSubCategory(e.target.value)
+                            // Reset asset type when sub category changes
+                            control._formValues.assetType = ''
+                          }}
+                        >
+                          {selectedPrimaryCategory && subCategories[selectedPrimaryCategory]?.map((subCat) => (
+                            <MenuItem key={subCat} value={subCat}>
+                              {subCat}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {errors.subCategory && (
+                          <Typography variant='caption' color='error' className='ml-3 mt-1'>
+                            {errors.subCategory.message}
+                          </Typography>
+                        )}
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
                     name='assetType'
                     control={control}
                     render={({ field }) => (
-                      <FormControl fullWidth error={!!errors.assetType}>
-                        <InputLabel>Asset Type</InputLabel>
-                        <Select {...field} label='Asset Type'>
-                          {assetTypes.map((type) => (
+                      <FormControl fullWidth error={!!errors.assetType} disabled={!selectedSubCategory}>
+                        <InputLabel>Asset Type *</InputLabel>
+                        <Select {...field} label='Asset Type *'>
+                          {availableAssetTypes.map((type) => (
                             <MenuItem key={type} value={type}>
                               {type}
                             </MenuItem>
@@ -194,7 +779,46 @@ const AssetRequestView = () => {
                             {errors.assetType.message}
                           </Typography>
                         )}
+                        {selectedSubCategory && (
+                          <Typography variant='caption' color='text.secondary' className='ml-3 mt-1'>
+                            Available types for {selectedSubCategory}: {availableAssetTypes.join(', ')}
+                          </Typography>
+                        )}
                       </FormControl>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='brand'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label='Brand/Manufacturer *'
+                        placeholder='Enter brand or manufacturer name'
+                        error={!!errors.brand}
+                        helperText={errors.brand?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='model'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label='Model/Specification *'
+                        placeholder='Enter model number or specifications'
+                        error={!!errors.model}
+                        helperText={errors.model?.message}
+                      />
                     )}
                   />
                 </Grid>
@@ -208,7 +832,7 @@ const AssetRequestView = () => {
                         {...field}
                         fullWidth
                         type='number'
-                        label='Quantity'
+                        label='Quantity *'
                         inputProps={{ min: 1 }}
                         error={!!errors.quantity}
                         helperText={errors.quantity?.message}
@@ -217,14 +841,108 @@ const AssetRequestView = () => {
                   />
                 </Grid>
 
+                {/* Financial Information */}
+                <Grid item xs={12}>
+                  <Divider className='my-4' />
+                  <Typography variant='h6' className='mb-4 text-primary'>
+                    <i className='ri-money-dollar-circle-line mr-2' />
+                    Financial Information
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='unitPrice'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        type='number'
+                        label='Estimated Unit Price (IDR) *'
+                        placeholder='Enter price per unit'
+                        InputProps={{
+                          startAdornment: <Typography className='mr-2'>Rp</Typography>
+                        }}
+                        error={!!errors.unitPrice}
+                        helperText={errors.unitPrice?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='totalBudget'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        type='number'
+                        label='Total Budget (IDR) *'
+                        placeholder='Enter total budget required'
+                        InputProps={{
+                          startAdornment: <Typography className='mr-2'>Rp</Typography>
+                        }}
+                        error={!!errors.totalBudget}
+                        helperText={errors.totalBudget?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='supplier'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label='Preferred Supplier (Optional)'
+                        placeholder='Enter preferred supplier name'
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='warrantyPeriod'
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl fullWidth>
+                        <InputLabel>Warranty Period</InputLabel>
+                        <Select {...field} label='Warranty Period'>
+                          {warrantyPeriods.map((period) => (
+                            <MenuItem key={period} value={period}>
+                              {period}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+
+                {/* Request Details */}
+                <Grid item xs={12}>
+                  <Divider className='my-4' />
+                  <Typography variant='h6' className='mb-4 text-primary'>
+                    <i className='ri-file-text-line mr-2' />
+                    Request Details
+                  </Typography>
+                </Grid>
+
                 <Grid item xs={12} md={6}>
                   <Controller
                     name='priority'
                     control={control}
                     render={({ field }) => (
                       <FormControl fullWidth error={!!errors.priority}>
-                        <InputLabel>Priority Level</InputLabel>
-                        <Select {...field} label='Priority Level'>
+                        <InputLabel>Priority Level *</InputLabel>
+                        <Select {...field} label='Priority Level *'>
                           {priorities.map((priority) => (
                             <MenuItem key={priority.value} value={priority.value}>
                               <Box className='flex items-center gap-2'>
@@ -254,8 +972,8 @@ const AssetRequestView = () => {
                     control={control}
                     render={({ field }) => (
                       <FormControl fullWidth error={!!errors.department}>
-                        <InputLabel>Department</InputLabel>
-                        <Select {...field} label='Department'>
+                        <InputLabel>Department *</InputLabel>
+                        <Select {...field} label='Department *'>
                           {departments.map((dept) => (
                             <MenuItem key={dept} value={dept}>
                               {dept}
@@ -274,6 +992,47 @@ const AssetRequestView = () => {
 
                 <Grid item xs={12} md={6}>
                   <Controller
+                    name='requestedFor'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label='Requested For *'
+                        placeholder='Person name or project name'
+                        error={!!errors.requestedFor}
+                        helperText={errors.requestedFor?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='location'
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl fullWidth error={!!errors.location}>
+                        <InputLabel>Installation/Usage Location *</InputLabel>
+                        <Select {...field} label='Installation/Usage Location *'>
+                          {locations.map((location) => (
+                            <MenuItem key={location} value={location}>
+                              {location}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {errors.location && (
+                          <Typography variant='caption' color='error' className='ml-3 mt-1'>
+                            {errors.location.message}
+                          </Typography>
+                        )}
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
                     name='expectedDate'
                     control={control}
                     render={({ field }) => (
@@ -281,7 +1040,7 @@ const AssetRequestView = () => {
                         {...field}
                         fullWidth
                         type='date'
-                        label='Expected Delivery Date'
+                        label='Expected Delivery Date *'
                         InputLabelProps={{ shrink: true }}
                         inputProps={{ min: new Date().toISOString().split('T')[0] }}
                         error={!!errors.expectedDate}
@@ -289,6 +1048,32 @@ const AssetRequestView = () => {
                       />
                     )}
                   />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='maintenanceRequirement'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label='Maintenance Requirement'
+                        placeholder='Special maintenance needs'
+                        multiline
+                        rows={2}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                {/* Additional Information */}
+                <Grid item xs={12}>
+                  <Divider className='my-4' />
+                  <Typography variant='h6' className='mb-4 text-primary'>
+                    <i className='ri-file-list-3-line mr-2' />
+                    Additional Information
+                  </Typography>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -301,10 +1086,78 @@ const AssetRequestView = () => {
                         fullWidth
                         multiline
                         rows={4}
-                        label='Business Justification'
-                        placeholder='Please provide detailed justification for this asset request...'
+                        label='Business Justification *'
+                        placeholder='Please provide detailed justification for this asset request (minimum 20 characters)...'
                         error={!!errors.justification}
                         helperText={errors.justification?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='urgencyReason'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        multiline
+                        rows={3}
+                        label='Urgency Reason (if applicable)'
+                        placeholder='Explain why this request is urgent'
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='technicalSpecs'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        multiline
+                        rows={3}
+                        label='Technical Specifications'
+                        placeholder='Detailed technical requirements'
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='complianceRequirements'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        multiline
+                        rows={3}
+                        label='Compliance Requirements'
+                        placeholder='Safety, regulatory, or certification requirements'
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name='environmentalConsiderations'
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        multiline
+                        rows={3}
+                        label='Environmental Considerations'
+                        placeholder='Environmental impact or sustainability considerations'
                       />
                     )}
                   />

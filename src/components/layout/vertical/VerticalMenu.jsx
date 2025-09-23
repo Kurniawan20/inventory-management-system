@@ -75,6 +75,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             label="Asset Registration & Tracking"
             icon={<i className='ri-qr-code-line' />}
           >
+            <MenuItem href={`/${locale}/apps/assets/requests`}>Asset Requests</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/list`}>Asset List</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/registration`}>Asset Registration</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/categories`}>Asset Categories</MenuItem>

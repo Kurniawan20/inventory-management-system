@@ -250,6 +250,28 @@ const verticalMenuData = dictionary => [
         ]
       },
       {
+        label: 'Assets Management',
+        icon: 'ri-building-line',
+        children: [
+          {
+            label: 'Asset Requests',
+            href: '/apps/assets/requests'
+          },
+          {
+            label: 'Asset Registration',
+            href: '/apps/assets/registration'
+          },
+          {
+            label: 'Asset Tracking',
+            href: '/apps/assets/tracking'
+          },
+          {
+            label: 'Maintenance History',
+            href: '/apps/assets/maintenance/history'
+          }
+        ]
+      },
+      {
         label: dictionary['navigation'].pages,
         icon: 'ri-layout-left-line',
         children: [
