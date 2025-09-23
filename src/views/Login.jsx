@@ -27,7 +27,6 @@ import classnames from 'classnames'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
-import EmployeeIdModal from '@components/dialogs/EmployeeIdModal'
 
 // Config Imports
 import themeConfig from '@configs/themeConfig'
@@ -52,8 +51,6 @@ const Login = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [errorState, setErrorState] = useState(null)
-  const [employeeModalOpen, setEmployeeModalOpen] = useState(false)
-  const [selectedShortcut, setSelectedShortcut] = useState(null)
 
   // Vars
   const pertaminaBg = '/images/pages/pertamina-login-bg.jpg'
@@ -116,33 +113,15 @@ const Login = ({ mode }) => {
 
   // Shortcut handlers
   const handleShortcutClick = (shortcutType) => {
-    setSelectedShortcut(shortcutType)
-    setEmployeeModalOpen(true)
-  }
-
-  const handleEmployeeIdSubmit = async (employeeId) => {
-    // Store employee ID in session storage for the shortcut session
-    sessionStorage.setItem('shortcutEmployeeId', employeeId)
-    sessionStorage.setItem('shortcutTimestamp', Date.now().toString())
-    
-    // Navigate to the selected shortcut page
     const routes = {
-      request: '/shortcuts/assets/request',
-      tracking: '/shortcuts/assets/tracking',
-      return: '/shortcuts/assets/return'
+      request: '/front-pages/shortcuts/assets/request',
+      tracking: '/front-pages/shortcuts/assets/tracking',
+      return: '/front-pages/shortcuts/assets/return'
     }
     
-    if (selectedShortcut && routes[selectedShortcut]) {
-      router.push(getLocalizedUrl(routes[selectedShortcut], locale))
+    if (routes[shortcutType]) {
+      router.push(routes[shortcutType])
     }
-    
-    setEmployeeModalOpen(false)
-    setSelectedShortcut(null)
-  }
-
-  const handleModalClose = () => {
-    setEmployeeModalOpen(false)
-    setSelectedShortcut(null)
   }
 
   return (
@@ -260,16 +239,6 @@ const Login = ({ mode }) => {
               </Typography>
             </div>
           </form>
-          <Divider className='gap-3'>or</Divider>
-          <Button
-            color='secondary'
-            className='self-center text-textPrimary'
-            startIcon={<img src='/images/logos/google.png' alt='Google' width={22} />}
-            sx={{ '& .MuiButton-startIcon': { marginInlineEnd: 3 } }}
-            onClick={() => signIn('google')}
-          >
-            Sign in with Google
-          </Button>
           
           <Divider className='gap-3'>Quick Access</Divider>
           
@@ -309,19 +278,6 @@ const Login = ({ mode }) => {
           </div>
         </div>
       </div>
-
-      {/* Employee ID Modal */}
-      <EmployeeIdModal
-        open={employeeModalOpen}
-        onClose={handleModalClose}
-        onSubmit={handleEmployeeIdSubmit}
-        title="Employee Verification Required"
-        description={`Please enter your Employee ID to access ${
-          selectedShortcut === 'request' ? 'Asset Request' :
-          selectedShortcut === 'tracking' ? 'Asset Tracking' :
-          selectedShortcut === 'return' ? 'Asset Return' : 'the feature'
-        }`}
-      />
     </div>
   )
 }

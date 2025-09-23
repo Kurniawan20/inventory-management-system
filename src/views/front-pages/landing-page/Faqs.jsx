@@ -24,28 +24,28 @@ import frontCommonStyles from '@views/front-pages/styles.module.css'
 const FaqsData = [
   {
     id: 'panel1',
-    question: 'Do you charge for each upgrade?',
+    question: 'How do I request a new asset?',
     answer:
-      'Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.'
+      'You can request a new asset by using the Asset Request feature. Simply fill out the request form with details like asset type, justification, budget, and expected delivery date. The request will be routed through the appropriate approval workflow based on your department and the asset value.'
   },
   {
     id: 'panel2',
-    question: 'What is regular license?',
+    question: 'How can I track my assigned assets?',
     active: true,
     answer:
-      'Regular license can be used for end products that do not charge users for access or service(access is free and there will be no monthly subscription fee). Single regular license can be used for single end product and end product can be used by you or your client. If you want to sell end product to multiple clients then you will need to purchase separate license for each client. The same rule applies if you want to use the same end product on multiple domains(unique setup). For more info on regular license you can check official description.'
+      'Use the Asset Tracking feature to search for assets by ID, barcode, or name. You can view real-time location, condition, maintenance schedules, and assignment details. The system also provides detailed asset history and upcoming maintenance alerts.'
   },
   {
     id: 'panel3',
-    question: 'What is extended license?',
+    question: 'What should I do when returning an asset?',
     answer:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis et aliquid quaerat possimus maxime! Mollitia reprehenderit neque repellat deleniti delectus architecto dolorum maxime, blanditiis earum ea, incidunt quam possimus cumque.'
+      'When returning an asset, use the Asset Return form to specify the return reason, current condition, and any notes about the asset. The system will guide you through the return process and update the asset status in the inventory automatically.'
   },
   {
     id: 'panel4',
-    question: 'Which license is applicable for SASS application?',
+    question: 'How does maintenance scheduling work?',
     answer:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis et aliquid quaerat possimus maxime! Mollitia reprehenderit neque repellat deleniti delectus architecto dolorum maxime, blanditiis earum ea, incidunt quam possimus cumque.'
+      'The system automatically schedules preventive maintenance based on asset type, usage patterns, and manufacturer recommendations. You will receive notifications before maintenance is due, and can track maintenance history and costs through the system.'
   }
 ]
 
@@ -98,7 +98,7 @@ const Faqs = () => {
           </Typography>
         </div>
         <Typography className='font-medium text-center'>
-          Browse through these FAQs to find answers to commonly asked questions.
+          Find answers to common questions about using the Asset Management System.
         </Typography>
       </div>
       <Grid container spacing={6}>

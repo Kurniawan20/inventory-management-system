@@ -203,6 +203,7 @@ const AssetReturnView = () => {
                           <TextField
                             {...field}
                             fullWidth
+                            size='medium'
                             label='Asset ID or Barcode'
                             placeholder='Enter Asset ID or scan barcode'
                             error={!!errors.assetId}
@@ -228,6 +229,7 @@ const AssetReturnView = () => {
                       <Button
                         variant='outlined'
                         color='primary'
+                        size='large'
                         fullWidth
                         onClick={searchAsset}
                         disabled={isSearching || !assetId.trim()}
@@ -236,6 +238,7 @@ const AssetReturnView = () => {
                           <i className='ri-loader-line animate-spin' /> : 
                           <i className='ri-search-line' />
                         }
+                        sx={{ height: '56px' }}
                       >
                         {isSearching ? 'Searching...' : 'Search Asset'}
                       </Button>

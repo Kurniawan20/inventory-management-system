@@ -28,33 +28,33 @@ import frontCommonStyles from '@views/front-pages/styles.module.css'
 const feature = [
   {
     icon: <LaptopCharging />,
-    title: 'Quality Code',
-    description: 'Code structure that all developers will easily understand and fall in love with.'
+    title: 'Asset Tracking',
+    description: 'Real-time tracking of all assets with barcode scanning and location monitoring capabilities.'
   },
   {
     icon: <TransitionUp />,
-    title: 'Continuous Updates',
-    description: 'Free updates for the next 12 months, including new demos and features.'
+    title: 'Maintenance Scheduling',
+    description: 'Automated maintenance scheduling with alerts and preventive maintenance workflows.'
   },
   {
     icon: <Edit />,
-    title: 'Stater-Kit',
-    description: 'Start your project quickly without having to remove unnecessary features.'
+    title: 'Request Management',
+    description: 'Streamlined asset request process with approval workflows and budget tracking.'
   },
   {
     icon: <Cube />,
-    title: 'API Ready',
-    description: 'Just change the endpoint and see your own data loaded within seconds.'
+    title: 'Inventory Control',
+    description: 'Complete inventory management with stock levels, procurement, and asset lifecycle tracking.'
   },
   {
     icon: <LifeBuoy />,
-    title: 'Excellent Support',
-    description: 'An easy-to-follow doc with lots of references and code examples.'
+    title: 'Compliance Ready',
+    description: 'Built-in compliance features for regulatory requirements and audit trails.'
   },
   {
     icon: <Document />,
-    title: 'Well Documented',
-    description: 'An easy-to-follow doc with lots of references and code examples.'
+    title: 'Comprehensive Reports',
+    description: 'Detailed analytics and reporting for asset utilization, costs, and performance metrics.'
   }
 ]
 
@@ -91,17 +91,17 @@ const UsefulFeature = () => {
           <div className='flex items-center justify-center mbe-6 gap-3'>
             <Lines />
             <Typography color='text.primary' className='font-medium uppercase'>
-              Useful Feature
+              Key Features
             </Typography>
           </div>
           <div className='flex items-baseline max-sm:flex-col gap-x-2 mbe-3 sm:mbe-2'>
             <Typography variant='h4' className='font-bold'>
-              Everything you need
+              Complete Asset Management
             </Typography>
-            <Typography variant='h5'>to start your next project</Typography>
+            <Typography variant='h5'>for enterprise operations</Typography>
           </div>
           <Typography className='font-medium text-center'>
-            Not just a set of tools, the package includes ready-to-deploy conceptual application.
+            Comprehensive solution designed specifically for Pertamina's asset management requirements.
           </Typography>
         </div>
         <div>

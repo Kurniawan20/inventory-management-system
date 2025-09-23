@@ -71,20 +71,31 @@ const HeroSection = ({ mode }) => {
       <div className={classnames('pbs-16 overflow-hidden', frontCommonStyles.layoutSpacing)}>
         <div className='md:max-is-[550px] mlb-0 mli-auto text-center'>
           <Typography className='font-extrabold text-primary sm:text-[38px] text-3xl mbe-4 leading-[44px]'>
-            All in one sass application for your business
+            Comprehensive Asset Management System for Pertamina
           </Typography>
           <Typography className='font-medium' color='text.primary'>
-            No coding required to make customizations. The live customizer has everything your marketing need.
+            Streamline your asset lifecycle with powerful tracking, maintenance scheduling, and real-time monitoring capabilities designed for enterprise operations.
           </Typography>
-          <div className='mlb-8'>
+          <div className='mlb-8 flex flex-col sm:flex-row gap-4 justify-center'>
             <Button
               component={Link}
               size='large'
-              href='/front-pages/landing-page#pricing-plans'
+              href='/front-pages/shortcuts/assets/request'
               variant='contained'
               color='primary'
+              startIcon={<i className='ri-add-box-line' />}
             >
-              Get Early Access
+              Request Asset
+            </Button>
+            <Button
+              component={Link}
+              size='large'
+              href='/front-pages/shortcuts/assets/tracking'
+              variant='outlined'
+              color='primary'
+              startIcon={<i className='ri-search-line' />}
+            >
+              Track Assets
             </Button>
           </div>
         </div>

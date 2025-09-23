@@ -88,32 +88,32 @@ const FrontMenu = props => {
       <Typography
         color='text.primary'
         component={Link}
-        href='/front-pages/landing-page#features'
+        href='/front-pages/shortcuts/assets/request'
         className={classnames('font-medium plb-3 pli-1.5 hover:text-primary', {
-          'text-primary': intersections.features
+          'text-primary': pathname === '/front-pages/shortcuts/assets/request'
         })}
       >
-        Features
+        Asset Request
       </Typography>
       <Typography
         color='text.primary'
         component={Link}
-        href='/front-pages/landing-page#team'
+        href='/front-pages/shortcuts/assets/tracking'
         className={classnames('font-medium plb-3 pli-1.5 hover:text-primary', {
-          'text-primary': intersections.team
+          'text-primary': pathname === '/front-pages/shortcuts/assets/tracking'
         })}
       >
-        Team
+        Asset Tracking
       </Typography>
       <Typography
         color='text.primary'
         component={Link}
-        href='/front-pages/landing-page#faq'
+        href='/front-pages/shortcuts/assets/return'
         className={classnames('font-medium plb-3 pli-1.5 hover:text-primary', {
-          'text-primary': intersections.faq
+          'text-primary': pathname === '/front-pages/shortcuts/assets/return'
         })}
       >
-        FAQ
+        Asset Return
       </Typography>
       <Typography
         color='text.primary'
@@ -125,20 +125,13 @@ const FrontMenu = props => {
       >
         Contact us
       </Typography>
-      <DropdownMenu
-        mode={mode}
-        isBelowLgScreen={isBelowLgScreen}
-        isDrawerOpen={isDrawerOpen}
-        setIsDrawerOpen={setIsDrawerOpen}
-      />
       <Typography
         color='text.primary'
         component={Link}
         href='/'
-        target='_blank'
         className='font-medium plb-3 pli-1.5 hover:text-primary'
       >
-        Admin
+        Admin Login
       </Typography>
     </Wrapper>
   )

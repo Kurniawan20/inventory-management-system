@@ -33,12 +33,11 @@ const Footer = () => {
           <Grid container rowSpacing={10} columnSpacing={12}>
             <Grid item xs={12} lg={5}>
               <div className='flex flex-col items-start gap-6'>
-                <Link href='/front-pages/landing-page'>
-                  <Logo color='var(--mui-palette-common-white)' />
+                <Link href='/front-pages/landing-page' className='inline-block p-1 bg-white rounded'>
+                  <Logo />
                 </Link>
                 <Typography color='white' className='lg:max-is-[390px] opacity-[0.78]'>
-                  Most Powerful & Comprehensive 🤩 React NextJS Admin Template with Elegant Material Design & Unique
-                  Layouts.
+                  Comprehensive Asset Management System for Pertamina. Streamline your asset lifecycle management with powerful tracking, maintenance, and reporting capabilities.
                 </Typography>
                 <div className='flex gap-4'>
                   <TextField
@@ -66,81 +65,59 @@ const Footer = () => {
             </Grid>
             <Grid item xs={12} sm={3} lg={2}>
               <Typography color='white' className='font-medium mbe-6 opacity-[0.92]'>
-                Pages
+                Quick Access
               </Typography>
               <div className='flex flex-col gap-4'>
-                <Typography component={Link} href='/front-pages/pricing' color='white' className='opacity-[0.78]'>
-                  Pricing
+                <Typography component={Link} href='/front-pages/shortcuts/assets/request' color='white' className='opacity-[0.78]'>
+                  Asset Request
                 </Typography>
-                <Link href='/front-pages/payment' className='flex items-center gap-[10px]'>
-                  <Typography color='white' className='opacity-[0.78]'>
-                    Payment
-                  </Typography>
-                  <Chip label='New' color='primary' size='small' />
-                </Link>
-                <Typography
-                  component={Link}
-                  href='/pages/misc/under-maintenance'
-                  color='white'
-                  className='opacity-[0.78]'
-                >
-                  Maintenance
+                <Typography component={Link} href='/front-pages/shortcuts/assets/tracking' color='white' className='opacity-[0.78]'>
+                  Asset Tracking
                 </Typography>
-                <Typography component={Link} href='/pages/misc/coming-soon' color='white' className='opacity-[0.78]'>
-                  Coming Soon
+                <Typography component={Link} href='/front-pages/shortcuts/assets/return' color='white' className='opacity-[0.78]'>
+                  Asset Return
+                </Typography>
+                <Typography component={Link} href='/' color='white' className='opacity-[0.78]'>
+                  Admin Login
                 </Typography>
               </div>
             </Grid>
             <Grid item xs={12} sm={3} lg={2}>
               <Typography color='white' className='font-medium mbe-6 opacity-[0.92]'>
-                Products
+                Services
               </Typography>
               <div className='flex flex-col gap-4'>
                 <Typography component={Link} href='/front-pages/landing-page' color='white' className='opacity-[0.78]'>
-                  Page builder
+                  Asset Management
                 </Typography>
                 <Typography component={Link} href='/front-pages/landing-page' color='white' className='opacity-[0.78]'>
-                  Admin Dashboards
+                  Inventory Control
                 </Typography>
                 <Typography component={Link} href='/front-pages/landing-page' color='white' className='opacity-[0.78]'>
-                  UI Kits
+                  Maintenance Scheduling
                 </Typography>
                 <Typography component={Link} href='/front-pages/landing-page' color='white' className='opacity-[0.78]'>
-                  Illustrations
+                  Reporting & Analytics
                 </Typography>
               </div>
             </Grid>
             <Grid item xs={12} sm={6} lg={3}>
               <Typography color='white' className='font-medium mbe-6 opacity-[0.92]'>
-                Download our App
+                Support
               </Typography>
               <div className='flex flex-col gap-4'>
-                <Link className='bg-[#211B2C] bs-[56px] is-[211px] rounded'>
-                  <div className='flex items-center pli-5 plb-[7px] gap-6'>
-                    <img src='/images/front-pages/apple-icon.png' alt='apple store' className='bs-[34px]' />
-                    <div className='flex flex-col items-start'>
-                      <Typography variant='body2' color='white' className='opacity-[0.82]'>
-                        Download on the
-                      </Typography>
-                      <Typography color='white' className='font-medium opacity-[0.92]'>
-                        App Store
-                      </Typography>
-                    </div>
-                  </div>
-                </Link>
-                <Link className='bg-[#211B2C] bs-[56px] is-[211px] rounded'>
-                  <div className='flex items-center pli-5 plb-[7px] gap-6'>
-                    <img src='/images/front-pages/google-play-icon.png' alt='Google play' className='bs-[34px]' />
-                    <div className='flex flex-col items-start'>
-                      <Typography variant='body2' color='white' className='opacity-[0.82]'>
-                        Download on the
-                      </Typography>
-                      <Typography color='white' className='font-medium opacity-[0.92]'>
-                        Google Play
-                      </Typography>
-                    </div>
-                  </div>
-                </Link>
+                <Typography component={Link} href='/front-pages/landing-page#contact-us' color='white' className='opacity-[0.78]'>
+                  Contact Support
+                </Typography>
+                <Typography component={Link} href='/front-pages/help-center' color='white' className='opacity-[0.78]'>
+                  Help Center
+                </Typography>
+                <Typography color='white' className='opacity-[0.78]'>
+                  Email: support@pertamina-ams.com
+                </Typography>
+                <Typography color='white' className='opacity-[0.78]'>
+                  Phone: +62 21 3815 5111
+                </Typography>
               </div>
             </Grid>
           </Grid>
@@ -154,24 +131,20 @@ const Footer = () => {
           )}
         >
           <Typography className='text-white opacity-[0.92]' variant='body2'>
-            <span>{`© ${new Date().getFullYear()}, Made with `}</span>
-            <span>{`❤️`}</span>
-            <span>{` by `}</span>
-            <Link href='https://pixinvent.com/' target='_blank' className='font-medium text-white'>
-              Pixinvent
-            </Link>
+            <span>{`© ${new Date().getFullYear()}, PT Pertamina (Persero). All rights reserved. `}</span>
+            <span>{`AMS - Asset Management System`}</span>
           </Typography>
           <div className='flex gap-1.5 items-center opacity-[0.78]'>
-            <IconButton component={Link} size='small' href='https://github.com/pixinvent' target='_blank'>
-              <i className='ri-github-fill text-white text-lg' />
+            <IconButton component={Link} size='small' href='https://www.pertamina.com' target='_blank'>
+              <i className='ri-global-line text-white text-lg' />
             </IconButton>
-            <IconButton component={Link} size='small' href='https://www.facebook.com/pixinvents/' target='_blank'>
+            <IconButton component={Link} size='small' href='https://www.facebook.com/pertamina' target='_blank'>
               <i className='ri-facebook-fill text-white text-lg' />
             </IconButton>
-            <IconButton component={Link} size='small' href='https://twitter.com/pixinvents' target='_blank'>
+            <IconButton component={Link} size='small' href='https://twitter.com/pertamina' target='_blank'>
               <i className='ri-twitter-fill text-white text-lg' />
             </IconButton>
-            <IconButton component={Link} size='small' href='https://www.linkedin.com/company/pixinvent' target='_blank'>
+            <IconButton component={Link} size='small' href='https://www.linkedin.com/company/pertamina' target='_blank'>
               <i className='ri-linkedin-fill text-white text-lg' />
             </IconButton>
           </div>

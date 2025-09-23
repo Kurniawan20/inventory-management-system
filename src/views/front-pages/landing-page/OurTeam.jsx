@@ -19,26 +19,26 @@ import frontCommonStyles from '@views/front-pages/styles.module.css'
 // Data
 const team = [
   {
-    name: 'Sophie Gilbert',
-    position: 'Project Manager',
+    name: 'Ahmad Rizki',
+    position: 'Asset Manager',
     image: '/images/front-pages/landing-page/sophie.png',
     color: 'var(--mui-palette-primary-mainOpacity)'
   },
   {
-    name: 'Chris Watkins',
-    position: 'Development Lead',
+    name: 'Sari Dewi',
+    position: 'IT Operations Lead',
     image: '/images/front-pages/landing-page/chris.png',
     color: 'var(--mui-palette-error-mainOpacity)'
   },
   {
-    name: 'Nannie Ford',
-    position: 'Marketing Manager',
+    name: 'Budi Santoso',
+    position: 'Maintenance Supervisor',
     image: '/images/front-pages/landing-page/nannie.png',
     color: 'var(--mui-palette-success-mainOpacity)'
   },
   {
-    name: 'Paul Miles',
-    position: 'UI Designer',
+    name: 'Maya Putri',
+    position: 'System Administrator',
     image: '/images/front-pages/landing-page/paul.png',
     color: 'var(--mui-palette-info-mainOpacity)'
   }
@@ -95,17 +95,17 @@ const OurTeam = () => {
             <div className='flex items-center justify-center mbe-6 gap-3'>
               <Lines />
               <Typography color='text.primary' className='font-medium uppercase'>
-                Our Great Team
+                AMS Support Team
               </Typography>
             </div>
           </div>
           <div className='flex items-baseline flex-wrap gap-2 mbe-3 sm:mbe-2'>
             <Typography variant='h4' className='font-bold'>
-              Supported
+              Expert Support
             </Typography>
-            <Typography variant='h5'> by Real People</Typography>
+            <Typography variant='h5'> from Pertamina Team</Typography>
           </div>
-          <Typography className='font-medium text-center'>Who is behind these great-looking interfaces?</Typography>
+          <Typography className='font-medium text-center'>Meet the dedicated professionals managing your asset operations.</Typography>
         </div>
         <Grid container rowSpacing={16} columnSpacing={6} className='pbs-[100px]'>
           {team.map((member, index) => (

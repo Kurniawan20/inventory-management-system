@@ -235,6 +235,7 @@ const AssetTrackingView = () => {
                       <TextField
                         {...field}
                         fullWidth
+                        size='medium'
                         label='Search Assets'
                         placeholder='Enter Asset ID, Barcode, or Asset Name'
                         error={!!errors.searchQuery}
@@ -266,6 +267,7 @@ const AssetTrackingView = () => {
                     type='submit'
                     variant='contained'
                     color='primary'
+                    size='large'
                     fullWidth
                     disabled={isSearching || !searchQuery.trim()}
                     startIcon={
@@ -273,6 +275,7 @@ const AssetTrackingView = () => {
                       <i className='ri-loader-line animate-spin' /> : 
                       <i className='ri-search-line' />
                     }
+                    sx={{ height: '56px' }}
                   >
                     {isSearching ? 'Searching...' : 'Search Assets'}
                   </Button>

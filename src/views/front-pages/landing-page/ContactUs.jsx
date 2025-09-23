@@ -66,11 +66,11 @@ const ContactUs = () => {
         </div>
         <div className='flex items-baseline flex-wrap gap-2 mbe-3 sm:mbe-2'>
           <Typography variant='h4' className='font-bold'>
-            Let&apos;s work
+            Need Support?
           </Typography>
-          <Typography variant='h5'>together</Typography>
+          <Typography variant='h5'>We're here to help</Typography>
         </div>
-        <Typography className='font-medium text-center'>Any question or remark? just write us a message</Typography>
+        <Typography className='font-medium text-center'>Contact our AMS support team for assistance with asset management</Typography>
       </div>
       <div>
         <Grid container spacing={6}>
@@ -78,15 +78,14 @@ const ContactUs = () => {
             <Card className='bg-primary'>
               <CardContent className='flex flex-col gap-5 pli-8 pbs-8 pbe-7'>
                 <div className='flex flex-col gap-1.5'>
-                  <Typography className='font-medium text-white'>Let&apos;s contact with us</Typography>
+                  <Typography className='font-medium text-white'>Get in touch with AMS Support</Typography>
                   <Typography variant='h4' className='text-white'>
-                    Share your ideas or requirement with our experts.
+                    Our team is ready to assist with your asset management needs.
                   </Typography>
                 </div>
                 <img src='/images/front-pages/landing-page/chat.png' alt='chat' className='is-full' />
                 <Typography className='text-white'>
-                  Looking for more customisation, more features, and more anything? Don&apos;t worry, We&apos;ve provide
-                  you with an entire team of experienced professionals.
+                  Whether you need help with asset tracking, maintenance scheduling, or system configuration, our experienced support team is here to help you maximize your AMS experience.
                 </Typography>
               </CardContent>
             </Card>
@@ -95,7 +94,7 @@ const ContactUs = () => {
             <Card>
               <CardContent>
                 <Typography variant='h5' className='mbe-5'>
-                  Share your ideas
+                  Contact AMS Support
                 </Typography>
                 <form className='flex flex-col items-start gap-5'>
                   <div className='flex gap-5 is-full'>
@@ -103,7 +102,7 @@ const ContactUs = () => {
                     <TextField fullWidth label='Email address' id='email-input' type='email' />
                   </div>
                   <TextField fullWidth multiline rows={7} label='Message' id='message-input' />
-                  <Button variant='contained'>Send Inquiry</Button>
+                  <Button variant='contained' startIcon={<i className='ri-send-plane-line' />}>Send Support Request</Button>
                 </form>
               </CardContent>
             </Card>

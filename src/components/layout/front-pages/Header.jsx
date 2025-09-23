@@ -68,22 +68,20 @@ const Header = ({ mode }) => {
               <CustomIconButton
                 component={Link}
                 variant='contained'
-                href='https://1.envato.market/materialize_admin'
+                href='/'
                 color='primary'
-                target='_blank'
               >
-                <i className='ri-shopping-cart-line text-xl' />
+                <i className='ri-login-box-line text-xl' />
               </CustomIconButton>
             ) : (
               <Button
                 component={Link}
                 variant='contained'
-                href='https://1.envato.market/materialize_admin'
-                startIcon={<i className='ri-shopping-cart-line text-xl' />}
+                href='/'
+                startIcon={<i className='ri-login-box-line text-xl' />}
                 className='whitespace-nowrap'
-                target='_blank'
               >
-                Purchase Now
+                Login
               </Button>
             )}
           </div>
