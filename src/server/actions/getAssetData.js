@@ -11,9 +11,14 @@ const generateAssetData = () => {
       serialNumber: 'KSB-2023-001',
       manufacturer: 'KSB',
       model: 'Etanorm G 200-150-400',
-      status: 'Active',
+      status: 'tersedia',
       purchaseDate: '2023-01-15',
       warrantyExpiry: '2026-01-15',
+      // Master Item Fields
+      color: 'Blue',
+      size: 'Large',
+      type: 'Equipment',
+      uom: 'unit',
       category: {
         primary: 'Production Equipment',
         sub: 'Pumps & Compressors',
@@ -28,7 +33,14 @@ const generateAssetData = () => {
         zone: 'Zone 1',
         coordinates: { latitude: '-7.7326', longitude: '109.0154' },
         responsiblePerson: 'Ahmad Suryanto',
-        department: 'Operations'
+        department: 'Operations',
+        // Location & Storage fields
+        location_id: 'WH-001',
+        location_name: 'Gudang A - Main Processing',
+        rack: 'R-001',
+        bin_location: 'A1-B2',
+        contact_person: 'Ahmad Warehouse',
+        notes: 'Heavy equipment storage area with crane access'
       },
       specifications: {
         dimensions: { length: '2.5', width: '1.2', height: '1.8', unit: 'm' },
@@ -62,9 +74,14 @@ const generateAssetData = () => {
       serialNumber: 'ALFA-2023-HE-002',
       manufacturer: 'Alfa Laval',
       model: 'M15-BFG',
-      status: 'Under Maintenance',
+      status: 'rusak',
       purchaseDate: '2023-03-20',
       warrantyExpiry: '2026-03-20',
+      // Master Item Fields
+      color: 'Silver',
+      size: 'Extra Large',
+      type: 'Equipment',
+      uom: 'unit',
       category: {
         primary: 'Production Equipment',
         sub: 'Heat Exchangers',
@@ -79,7 +96,14 @@ const generateAssetData = () => {
         zone: 'Zone 2',
         coordinates: { latitude: '-7.7328', longitude: '109.0156' },
         responsiblePerson: 'Siti Nurhaliza',
-        department: 'Operations'
+        department: 'Operations',
+        // Location & Storage fields
+        location_id: 'WH-002',
+        location_name: 'Heat Exchange Storage',
+        rack: 'R-HE-01',
+        bin_location: 'HE-L2-001',
+        contact_person: 'Siti Operations',
+        notes: 'High temperature equipment area - special handling required'
       },
       specifications: {
         dimensions: { length: '4.2', width: '2.1', height: '3.5', unit: 'm' },
@@ -113,9 +137,14 @@ const generateAssetData = () => {
       serialNumber: 'FISHER-2023-CV-003',
       manufacturer: 'Fisher',
       model: 'ED Series',
-      status: 'Active',
+      status: 'dipakai',
       purchaseDate: '2023-05-10',
       warrantyExpiry: '2025-05-10',
+      // Master Item Fields
+      color: 'Gray',
+      size: 'Medium',
+      type: 'Equipment',
+      uom: 'unit',
       category: {
         primary: 'Production Equipment',
         sub: 'Valves',
@@ -130,7 +159,14 @@ const generateAssetData = () => {
         zone: 'Zone 3',
         coordinates: { latitude: '-7.7330', longitude: '109.0158' },
         responsiblePerson: 'Budi Santoso',
-        department: 'Instrumentation'
+        department: 'Instrumentation',
+        // Location & Storage fields
+        location_id: 'CR-001',
+        location_name: 'Control Room Storage',
+        rack: 'R-CTRL-01',
+        bin_location: 'CR-A1',
+        contact_person: 'Budi Control',
+        notes: 'Instrumentation equipment storage with climate control'
       },
       specifications: {
         dimensions: { length: '0.8', width: '0.6', height: '1.2', unit: 'm' },
@@ -164,9 +200,14 @@ const generateAssetData = () => {
       serialNumber: 'TANK-2022-T401',
       manufacturer: 'PT Wijaya Karya',
       model: 'Fixed Roof Tank',
-      status: 'Active',
+      status: 'tersedia',
       purchaseDate: '2022-08-15',
       warrantyExpiry: '2027-08-15',
+      // Master Item Fields
+      color: 'White',
+      size: 'Extra Large',
+      type: 'Equipment',
+      uom: 'unit',
       category: {
         primary: 'Storage & Tanks',
         sub: 'Crude Oil Tanks',
@@ -181,7 +222,14 @@ const generateAssetData = () => {
         zone: 'Storage Zone',
         coordinates: { latitude: '-7.7340', longitude: '109.0170' },
         responsiblePerson: 'Dewi Kartika',
-        department: 'Operations'
+        department: 'Operations',
+        // Location & Storage fields
+        location_id: 'TF-A04',
+        location_name: 'Tank Farm A - Area 4',
+        rack: 'TANK-AREA',
+        bin_location: 'T-401-LOC',
+        contact_person: 'Dewi Tank Operations',
+        notes: 'Large storage tank area - restricted access required'
       },
       specifications: {
         dimensions: { length: '25', width: '25', height: '12', unit: 'm' },
@@ -215,9 +263,14 @@ const generateAssetData = () => {
       serialNumber: 'HONEYWELL-2023-FDS-001',
       manufacturer: 'Honeywell',
       model: 'NOTIFIER NFS2-3030',
-      status: 'Active',
+      status: 'tersedia',
       purchaseDate: '2023-02-28',
       warrantyExpiry: '2026-02-28',
+      // Master Item Fields
+      color: 'Red',
+      size: 'Large',
+      type: 'Safety Equipment',
+      uom: 'set',
       category: {
         primary: 'Safety Equipment',
         sub: 'Fire Protection Systems',
@@ -232,7 +285,14 @@ const generateAssetData = () => {
         zone: 'Safety Zone',
         coordinates: { latitude: '-7.7325', longitude: '109.0145' },
         responsiblePerson: 'Eko Prasetyo',
-        department: 'Safety & Environment'
+        department: 'Safety & Environment',
+        // Location & Storage fields
+        location_id: 'FCR-001',
+        location_name: 'Fire Control Room',
+        rack: 'R-FIRE-01',
+        bin_location: 'FCR-MAIN',
+        contact_person: 'Eko Safety',
+        notes: 'Critical safety system - 24/7 monitoring required'
       },
       specifications: {
         dimensions: { length: '2.0', width: '0.8', height: '1.5', unit: 'm' },
@@ -257,6 +317,132 @@ const generateAssetData = () => {
       tags: ['Safety Critical', 'Fire & Gas', 'Electrical'],
       createdAt: '2023-02-28T09:30:00Z',
       updatedAt: '2024-08-10T13:15:00Z'
+    },
+    {
+      id: 'AST-006',
+      name: 'Safety Helmet',
+      assetCode: 'PPE-001',
+      description: 'Personal protective equipment - safety helmet',
+      serialNumber: 'MSA-2024-H-001',
+      manufacturer: 'MSA',
+      model: 'V-Gard',
+      status: 'habis',
+      purchaseDate: '2024-01-15',
+      warrantyExpiry: '2026-01-15',
+      // Master Item Fields
+      color: 'Yellow',
+      size: 'Large',
+      type: 'S3 SRC',
+      uom: 'pcs',
+      category: {
+        primary: 'Safety Equipment',
+        sub: 'Personal Protective Equipment',
+        type: 'Consumable',
+        classification: 'Standard'
+      },
+      location: {
+        facility: 'Pertamina Refinery Cilacap',
+        building: 'Safety Equipment Store',
+        floor: 'Ground Floor',
+        room: 'PPE Storage',
+        zone: 'Safety Zone',
+        coordinates: { latitude: '-7.7320', longitude: '109.0140' },
+        responsiblePerson: 'Safety Officer',
+        department: 'Safety & Environment',
+        // Location & Storage fields
+        location_id: 'PPE-001',
+        location_name: 'PPE Storage Area',
+        rack: 'R-PPE-01',
+        bin_location: 'PPE-HELM-001',
+        contact_person: 'Safety Store Keeper',
+        notes: 'Personal protective equipment storage - regular inspection required'
+      },
+      specifications: {
+        dimensions: { length: '0.3', width: '0.25', height: '0.15', unit: 'm' },
+        weight: '0.4',
+        powerRating: '0',
+        voltage: '0',
+        frequency: '0',
+        capacity: '1',
+        operatingTemp: { min: '-20', max: '50' },
+        pressure: '0'
+      },
+      maintenance: {
+        type: 'Visual Inspection',
+        frequency: 'Weekly',
+        lastDate: '2024-09-01',
+        nextDate: '2024-09-08',
+        team: 'Safety Team',
+        estimatedCost: '50000'
+      },
+      criticality: 'Medium',
+      riskLevel: 'Low',
+      tags: ['PPE', 'Safety', 'Consumable'],
+      createdAt: '2024-01-15T08:00:00Z',
+      updatedAt: '2024-09-01T10:00:00Z'
+    },
+    {
+      id: 'AST-007',
+      name: 'Work Uniform Set',
+      assetCode: 'UNI-001',
+      description: 'Complete work uniform with 4 layers protection',
+      serialNumber: 'UNIFORM-2024-001',
+      manufacturer: 'PT Garment Indonesia',
+      model: 'Industrial Uniform',
+      status: 'dipensiunkan',
+      purchaseDate: '2024-03-01',
+      warrantyExpiry: '2025-03-01',
+      // Master Item Fields
+      color: 'Blue',
+      size: '42',
+      type: '4 Susun',
+      uom: 'set',
+      category: {
+        primary: 'Safety Equipment',
+        sub: 'Work Clothing',
+        type: 'Consumable',
+        classification: 'Standard'
+      },
+      location: {
+        facility: 'Pertamina Refinery Cilacap',
+        building: 'Employee Facility',
+        floor: 'Ground Floor',
+        room: 'Uniform Storage',
+        zone: 'Admin Zone',
+        coordinates: { latitude: '-7.7315', longitude: '109.0135' },
+        responsiblePerson: 'HR Officer',
+        department: 'Human Resources',
+        // Location & Storage fields
+        location_id: 'UNI-001',
+        location_name: 'Uniform Storage Room',
+        rack: 'R-UNI-01',
+        bin_location: 'UNI-SIZE-42',
+        contact_person: 'HR Store Keeper',
+        notes: 'Employee uniform storage organized by size and department'
+      },
+      specifications: {
+        dimensions: { length: '0.6', width: '0.4', height: '0.1', unit: 'm' },
+        weight: '1.2',
+        powerRating: '0',
+        voltage: '0',
+        frequency: '0',
+        capacity: '1',
+        operatingTemp: { min: '-10', max: '40' },
+        pressure: '0'
+      },
+      maintenance: {
+        type: 'Cleaning',
+        frequency: 'Weekly',
+        lastDate: '2024-08-25',
+        nextDate: '2024-09-01',
+        team: 'Housekeeping',
+        estimatedCost: '25000'
+      },
+      criticality: 'Low',
+      riskLevel: 'Low',
+      tags: ['Uniform', 'PPE', 'Clothing'],
+      createdAt: '2024-03-01T09:00:00Z',
+      updatedAt: '2024-08-25T15:00:00Z'
     }
   ]
 

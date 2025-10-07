@@ -254,6 +254,10 @@ const verticalMenuData = dictionary => [
         icon: 'ri-building-line',
         children: [
           {
+            label: 'Master Item Assets',
+            href: '/apps/assets/list'
+          },
+          {
             label: 'Asset Requests',
             href: '/apps/assets/requests'
           },
@@ -268,6 +272,10 @@ const verticalMenuData = dictionary => [
           {
             label: 'Maintenance History',
             href: '/apps/assets/maintenance/history'
+          },
+          {
+            label: 'Vendor Management',
+            href: '/apps/vendors'
           }
         ]
       },

@@ -28,11 +28,17 @@ const AssetRegistrationProvider = ({ children }) => {
     serialNumber: '',
     manufacturer: '',
     model: '',
-    status: 'Active',
+    status: 'tersedia',
     purchaseDate: '',
     purchasePrice: '',
     currency: 'IDR',
     warrantyExpiry: '',
+    
+    // Master Item Fields (matching your schema)
+    color: '',
+    size: '',
+    uom: '', // Unit of Measure
+    type: '', // Item type (will map to category.type)
     
     // Images and Documents
     images: [],
@@ -55,8 +61,9 @@ const AssetRegistrationProvider = ({ children }) => {
       additionalSpecs: ''
     },
     
-    // Location
+    // Location & Storage (matching your schema)
     location: {
+      // Existing fields
       facility: '',
       building: '',
       floor: '',
@@ -72,7 +79,15 @@ const AssetRegistrationProvider = ({ children }) => {
       },
       responsiblePerson: '',
       department: '',
-      costCenter: ''
+      costCenter: '',
+      
+      // New Location & Storage fields (matching your schema)
+      location_id: '', // ID lokasi/gudang
+      location_name: '', // Nama lokasi (Gudang A, WH-01, Ruang Server, dll.)
+      rack: '', // Nomor rak penyimpanan
+      bin_location: '', // Slot/bin lokasi penyimpanan
+      contact_person: '', // Penanggung jawab lokasi
+      notes: '' // Catatan tambahan
     },
     
     // Category
@@ -92,30 +107,30 @@ const AssetRegistrationProvider = ({ children }) => {
     // QR Code
     qrCode: null,
     criticality: '',
-    riskLevel: '',
     complianceRequired: false,
     environmentalImpact: '',
     safetyCategory: '',
     tags: [],
     
-    // Maintenance
-    maintenance: {
-      required: true,
-      type: '',
-      frequency: '',
-      frequencyValue: '',
-      frequencyUnit: 'days',
-      lastDate: '',
-      nextDate: '',
-      estimatedDuration: '',
-      team: '',
-      skillsRequired: [],
-      spareParts: [],
-      instructions: '',
-      safetyPrecautions: '',
-      downtime: { planned: '', estimated: '' },
-      cost: { estimated: '', currency: 'IDR' }
-    }
+    // Financial Information
+    financial: {
+      purchasePrice: '',
+      currency: 'IDR',
+      supplier: '',
+      vendor_id: '', // Vendor/Supplier ID
+      purchaseDate: '',
+      warrantyPeriod: '',
+      warrantyExpiry: '',
+      depreciationMethod: 'Straight Line',
+      depreciationRate: '',
+      salvageValue: '',
+      bookValue: '',
+      insuranceValue: '',
+      insuranceProvider: '',
+      insuranceExpiry: ''
+    },
+    downtime: { planned: '', estimated: '' },
+    cost: { estimated: '', currency: 'IDR' }
   })
 
   const [loading, setLoading] = useState(false)

@@ -275,6 +275,79 @@ const AssetLocation = () => {
             />
           </Grid>
 
+          {/* Storage & Warehouse Details */}
+          <Grid item xs={12}>
+            <Typography variant='h6' className='mb-4'>
+              Storage & Warehouse Details
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Location ID'
+              value={formData.location.location_id}
+              onChange={handleChange('location_id')}
+              placeholder='e.g., WH-001, GDG-A01'
+              helperText='ID lokasi/gudang'
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Location Name'
+              value={formData.location.location_name}
+              onChange={handleChange('location_name')}
+              placeholder='e.g., Gudang A, WH-01, Ruang Server'
+              helperText='Nama lokasi'
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Rack Number'
+              value={formData.location.rack}
+              onChange={handleChange('rack')}
+              placeholder='e.g., R-001, Rack-A1'
+              helperText='Nomor rak penyimpanan'
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Bin Location'
+              value={formData.location.bin_location}
+              onChange={handleChange('bin_location')}
+              placeholder='e.g., A1-B2, Slot-001'
+              helperText='Slot/bin lokasi penyimpanan'
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Contact Person'
+              value={formData.location.contact_person}
+              onChange={handleChange('contact_person')}
+              placeholder='e.g., Ahmad Warehouse'
+              helperText='Penanggung jawab lokasi'
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {/* Spacer for layout */}
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label='Storage Notes'
+              value={formData.location.notes}
+              onChange={handleChange('notes')}
+              placeholder='Additional notes about storage location, handling instructions, etc.'
+              helperText='Catatan tambahan'
+            />
+          </Grid>
+
           {/* Responsibility Assignment */}
           <Grid item xs={12}>
             <Typography variant='h6' className='mb-4'>

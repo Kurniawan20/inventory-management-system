@@ -52,6 +52,11 @@ const AssetDetailView = ({ asset }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
+      case 'tersedia': return 'success'
+      case 'dipakai': return 'info'
+      case 'rusak': return 'error'
+      case 'habis': return 'warning'
+      case 'dipensiunkan': return 'secondary'
       case 'Active': return 'success'
       case 'Under Maintenance': return 'warning'
       case 'Inactive': return 'secondary'
@@ -210,6 +215,39 @@ const AssetDetailView = ({ asset }) => {
                           <TableCell><strong>Classification</strong></TableCell>
                           <TableCell>{asset.category.classification}</TableCell>
                         </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Type</strong></TableCell>
+                          <TableCell>{asset.type || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Color</strong></TableCell>
+                          <TableCell>
+                            <Box className="flex items-center gap-2">
+                              {asset.color && (
+                                <Box
+                                  sx={{
+                                    width: 16,
+                                    height: 16,
+                                    borderRadius: '50%',
+                                    backgroundColor: asset.color.toLowerCase(),
+                                    border: '1px solid #ddd'
+                                  }}
+                                />
+                              )}
+                              {asset.color || '-'}
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Size</strong></TableCell>
+                          <TableCell>{asset.size || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Unit of Measure</strong></TableCell>
+                          <TableCell>
+                            <Chip label={asset.uom || 'pcs'} size="small" variant="outlined" />
+                          </TableCell>
+                        </TableRow>
                       </TableBody>
                     </Table>
                   </TableContainer>
@@ -313,45 +351,91 @@ const AssetDetailView = ({ asset }) => {
           {/* Location Tab */}
           {activeTab === 2 && (
             <CardContent>
-              <Typography variant="h6" className="mb-3">Location Details</Typography>
-              <TableContainer component={Paper} variant="outlined">
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell><strong>Facility</strong></TableCell>
-                      <TableCell>{asset.location.facility}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Building</strong></TableCell>
-                      <TableCell>{asset.location.building}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Floor</strong></TableCell>
-                      <TableCell>{asset.location.floor}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Room</strong></TableCell>
-                      <TableCell>{asset.location.room}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Zone</strong></TableCell>
-                      <TableCell>{asset.location.zone}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Responsible Person</strong></TableCell>
-                      <TableCell>{asset.location.responsiblePerson}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Department</strong></TableCell>
-                      <TableCell>{asset.location.department}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell><strong>Coordinates</strong></TableCell>
-                      <TableCell>{asset.location.coordinates?.latitude}, {asset.location.coordinates?.longitude}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Grid container spacing={4}>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="h6" className="mb-3">General Location</Typography>
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell><strong>Facility</strong></TableCell>
+                          <TableCell>{asset.location.facility}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Building</strong></TableCell>
+                          <TableCell>{asset.location.building}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Floor</strong></TableCell>
+                          <TableCell>{asset.location.floor}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Room</strong></TableCell>
+                          <TableCell>{asset.location.room}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Zone</strong></TableCell>
+                          <TableCell>{asset.location.zone}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Coordinates</strong></TableCell>
+                          <TableCell>{asset.location.coordinates?.latitude}, {asset.location.coordinates?.longitude}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="h6" className="mb-3">Storage & Warehouse</Typography>
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell><strong>Location ID</strong></TableCell>
+                          <TableCell>{asset.location.location_id || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Location Name</strong></TableCell>
+                          <TableCell>{asset.location.location_name || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Rack Number</strong></TableCell>
+                          <TableCell>{asset.location.rack || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Bin Location</strong></TableCell>
+                          <TableCell>{asset.location.bin_location || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Contact Person</strong></TableCell>
+                          <TableCell>{asset.location.contact_person || '-'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Storage Notes</strong></TableCell>
+                          <TableCell>{asset.location.notes || '-'}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h6" className="mb-3">Responsibility</Typography>
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell><strong>Responsible Person</strong></TableCell>
+                          <TableCell>{asset.location.responsiblePerson}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell><strong>Department</strong></TableCell>
+                          <TableCell>{asset.location.department}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+              </Grid>
             </CardContent>
           )}
 

@@ -57,6 +57,16 @@ const AssetListTable = ({ assets, loading }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
+      case 'tersedia':
+        return 'success'
+      case 'dipakai':
+        return 'info'
+      case 'rusak':
+        return 'error'
+      case 'habis':
+        return 'warning'
+      case 'dipensiunkan':
+        return 'secondary'
       case 'Active':
         return 'success'
       case 'Under Maintenance':
@@ -129,12 +139,14 @@ const AssetListTable = ({ assets, loading }) => {
           <TableHead>
             <TableRow>
               <TableCell>Asset</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Location</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Color</TableCell>
+              <TableCell>Size</TableCell>
+              <TableCell>UOM</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Criticality</TableCell>
-              <TableCell>Next Maintenance</TableCell>
-              <TableCell>Responsible</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Storage</TableCell>
+              <TableCell>Category</TableCell>
               <TableCell align='center'>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -169,24 +181,39 @@ const AssetListTable = ({ assets, loading }) => {
                   </Box>
                 </TableCell>
                 <TableCell>
-                  <Box>
-                    <Typography variant='body2' className='font-medium'>
-                      {asset.category.primary}
-                    </Typography>
-                    <Typography variant='caption' color='text.secondary'>
-                      {asset.category.sub}
+                  <Typography variant='body2' className='font-medium'>
+                    {asset.type || '-'}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Box className='flex items-center gap-2'>
+                    {asset.color && (
+                      <Box
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: '50%',
+                          backgroundColor: asset.color.toLowerCase(),
+                          border: '1px solid #ddd'
+                        }}
+                      />
+                    )}
+                    <Typography variant='body2'>
+                      {asset.color || '-'}
                     </Typography>
                   </Box>
                 </TableCell>
                 <TableCell>
-                  <Box>
-                    <Typography variant='body2' className='font-medium'>
-                      {asset.location.facility}
-                    </Typography>
-                    <Typography variant='caption' color='text.secondary'>
-                      {asset.location.building} • {asset.location.room}
-                    </Typography>
-                  </Box>
+                  <Typography variant='body2'>
+                    {asset.size || '-'}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    label={asset.uom || 'pcs'}
+                    size='small'
+                    variant='outlined'
+                  />
                 </TableCell>
                 <TableCell>
                   <Chip
@@ -197,36 +224,33 @@ const AssetListTable = ({ assets, loading }) => {
                   />
                 </TableCell>
                 <TableCell>
-                  <Chip
-                    label={asset.criticality}
-                    color={getCriticalityColor(asset.criticality)}
-                    size='small'
-                    variant='tonal'
-                  />
-                </TableCell>
-                <TableCell>
                   <Box>
-                    <Typography variant='body2'>
-                      {formatDate(asset.maintenance.nextDate)}
+                    <Typography variant='body2' className='font-medium'>
+                      {asset.location?.location_name || asset.location?.facility || '-'}
                     </Typography>
                     <Typography variant='caption' color='text.secondary'>
-                      {asset.maintenance.type}
+                      {asset.location?.location_id || '-'}
                     </Typography>
                   </Box>
                 </TableCell>
                 <TableCell>
-                  <Box className='flex items-center gap-2'>
-                    <Avatar sx={{ width: 32, height: 32 }}>
-                      {asset.location.responsiblePerson.split(' ').map(n => n[0]).join('')}
-                    </Avatar>
-                    <Box>
-                      <Typography variant='body2' className='font-medium'>
-                        {asset.location.responsiblePerson}
-                      </Typography>
-                      <Typography variant='caption' color='text.secondary'>
-                        {asset.location.department}
-                      </Typography>
-                    </Box>
+                  <Box>
+                    <Typography variant='body2' className='font-medium'>
+                      {asset.location?.rack || '-'}
+                    </Typography>
+                    <Typography variant='caption' color='text.secondary'>
+                      {asset.location?.bin_location || '-'}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box>
+                    <Typography variant='body2' className='font-medium'>
+                      {asset.category?.primary || '-'}
+                    </Typography>
+                    <Typography variant='caption' color='text.secondary'>
+                      {asset.category?.sub || '-'}
+                    </Typography>
                   </Box>
                 </TableCell>
                 <TableCell align='center'>

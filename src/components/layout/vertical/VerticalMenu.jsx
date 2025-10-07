@@ -82,6 +82,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/assets/tracking`}>Asset Tracking</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/locations`}>Locations & Ownership</MenuItem>
             <MenuItem href={`/${locale}/apps/assets/departments`}>Department Management</MenuItem>
+            <MenuItem href={`/${locale}/apps/vendors`}>Vendor Management</MenuItem>
           </SubMenu>
           
           <SubMenu
@@ -124,12 +125,16 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             Asset Inventory & Audit
           </MenuItem>
           
-          <MenuItem href={`/${locale}/apps/assets/procurement`} icon={<i className='ri-shopping-cart-line' />}>
-            Asset Procurement
+          <MenuItem href={`/${locale}/apps/purchases`} icon={<i className='ri-shopping-cart-line' />}>
+            Purchase Management
           </MenuItem>
           
           <MenuItem href={`/${locale}/apps/assets/compliance`} icon={<i className='ri-shield-check-line' />}>
             Compliance & Documentation
+          </MenuItem>
+          
+          <MenuItem href={`/${locale}/apps/assets/analytics`} icon={<i className='ri-robot-line' />}>
+            Asset Analytics & ML
           </MenuItem>
         </MenuSection>
 
@@ -148,6 +153,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             icon={<i className='ri-stack-line' />}
           >
             <MenuItem href={`/${locale}/apps/warehouse/inventory/real-time`}>Real-time Stock</MenuItem>
+            <MenuItem href={`/${locale}/apps/inventory/movements`}>Inventory Movement</MenuItem>
             <MenuItem href={`/${locale}/apps/warehouse/inventory/fifo-lifo`}>FIFO/LIFO/FEFO</MenuItem>
             <MenuItem href={`/${locale}/apps/warehouse/inventory/multi-warehouse`}>Multi-warehouse Control</MenuItem>
             <MenuItem href={`/${locale}/apps/warehouse/inventory/food-ingredients`}>Food Ingredients</MenuItem>

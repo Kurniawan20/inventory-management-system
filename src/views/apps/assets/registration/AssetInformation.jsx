@@ -13,17 +13,21 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
+import Autocomplete from '@mui/material/Autocomplete'
 import FormHelperText from '@mui/material/FormHelperText'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 
 // Hook Imports
 import { useAssetRegistration } from './AssetRegistrationProvider'
+
+// Server Actions
+import { getVendorList } from '@/server/actions/getVendorData'
 
 // Utils
 import { isFieldVisible } from '../../../../utils/categoryFieldsConfig'
@@ -32,7 +36,26 @@ const AssetInformation = () => {
   const { formData, updateFormData, errors } = useAssetRegistration()
   const [isGeneratingCode, setIsGeneratingCode] = useState(false)
   const [isValidatingCode, setIsValidatingCode] = useState(false)
+  const [vendors, setVendors] = useState([])
+  const [loadingVendors, setLoadingVendors] = useState(false)
   const [codeValidationStatus, setCodeValidationStatus] = useState(null) // 'available', 'taken', 'error'
+
+  // Load vendors on component mount
+  useEffect(() => {
+    const loadVendors = async () => {
+      try {
+        setLoadingVendors(true)
+        const result = await getVendorList()
+        setVendors(result.vendors || [])
+      } catch (error) {
+        console.error('Error loading vendors:', error)
+      } finally {
+        setLoadingVendors(false)
+      }
+    }
+    
+    loadVendors()
+  }, [])
 
   const handleChange = (field) => (event) => {
     const value = event.target.value
@@ -363,6 +386,30 @@ const AssetInformation = () => {
               }}
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Asset Type</InputLabel>
+              <Select
+                value={formData.type}
+                label='Asset Type'
+                onChange={handleChange('type')}
+              >
+                <MenuItem value='S3 SRC'>S3 SRC</MenuItem>
+                <MenuItem value='4 Susun'>4 Susun</MenuItem>
+                <MenuItem value='Jumper'>Jumper</MenuItem>
+                <MenuItem value='Informa'>Informa</MenuItem>
+                <MenuItem value='Equipment'>Equipment</MenuItem>
+                <MenuItem value='Tool'>Tool</MenuItem>
+                <MenuItem value='Furniture'>Furniture</MenuItem>
+                <MenuItem value='Vehicle'>Vehicle</MenuItem>
+                <MenuItem value='IT Equipment'>IT Equipment</MenuItem>
+                <MenuItem value='Safety Equipment'>Safety Equipment</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {/* Spacer for layout */}
+          </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -401,6 +448,36 @@ const AssetInformation = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
+            <Autocomplete
+              options={vendors}
+              getOptionLabel={(option) => `${option.vendor_name} (${option.vendor_id})`}
+              value={vendors.find(v => v.vendor_id === formData.financial?.vendor_id) || null}
+              onChange={(event, newValue) => {
+                updateFormData('financial.vendor_id', newValue?.vendor_id || '')
+                updateFormData('financial.supplier', newValue?.vendor_name || '')
+              }}
+              loading={loadingVendors}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label='Vendor/Supplier'
+                  placeholder='Select vendor/supplier'
+                  helperText='Select the vendor who supplied this asset'
+                />
+              )}
+              renderOption={(props, option) => (
+                <Box component="li" {...props}>
+                  <Box>
+                    <Typography variant="body2">{option.vendor_name}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {option.vendor_id} • {option.contact_name}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label='Model'
@@ -411,6 +488,45 @@ const AssetInformation = () => {
               error={!!errors.model}
               helperText={errors.model}
             />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Color'
+              placeholder='e.g., Red, Blue, Silver'
+              value={formData.color}
+              onChange={handleChange('color')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Size'
+              placeholder='e.g., 35, 36, 42, Large, Medium'
+              value={formData.size}
+              onChange={handleChange('size')}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Unit of Measure (UOM)</InputLabel>
+              <Select
+                value={formData.uom}
+                label='Unit of Measure (UOM)'
+                onChange={handleChange('uom')}
+              >
+                <MenuItem value='pcs'>Pieces (pcs)</MenuItem>
+                <MenuItem value='unit'>Unit</MenuItem>
+                <MenuItem value='lembar'>Lembar</MenuItem>
+                <MenuItem value='set'>Set</MenuItem>
+                <MenuItem value='kg'>Kilogram (kg)</MenuItem>
+                <MenuItem value='liter'>Liter</MenuItem>
+                <MenuItem value='meter'>Meter</MenuItem>
+                <MenuItem value='box'>Box</MenuItem>
+                <MenuItem value='roll'>Roll</MenuItem>
+                <MenuItem value='pair'>Pair</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -486,10 +602,11 @@ const AssetInformation = () => {
                 label='Status'
                 onChange={handleChange('status')}
               >
-                <MenuItem value='Active'>Active</MenuItem>
-                <MenuItem value='Inactive'>Inactive</MenuItem>
-                <MenuItem value='Under Maintenance'>Under Maintenance</MenuItem>
-                <MenuItem value='Disposed'>Disposed</MenuItem>
+                <MenuItem value='tersedia'>Tersedia</MenuItem>
+                <MenuItem value='dipakai'>Dipakai</MenuItem>
+                <MenuItem value='rusak'>Rusak</MenuItem>
+                <MenuItem value='habis'>Habis</MenuItem>
+                <MenuItem value='dipensiunkan'>Dipensiunkan</MenuItem>
               </Select>
             </FormControl>
           </Grid>
