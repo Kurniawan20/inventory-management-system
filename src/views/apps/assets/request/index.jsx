@@ -2,6 +2,7 @@
 
 // React Imports
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 // MUI Imports
 import Grid from '@mui/material/Grid'
@@ -51,6 +52,8 @@ const schema = object({
 })
 
 const AssetRequestView = () => {
+  const router = useRouter()
+  
   // Define asset types array first
   const assetTypes = [
     'Fixed Asset',
@@ -295,7 +298,8 @@ const AssetRequestView = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue
   } = useForm({
     resolver: valibotResolver(schema),
     defaultValues: {
@@ -344,15 +348,117 @@ const AssetRequestView = () => {
         requestDate: new Date().toISOString()
       })
       
-      setSubmitSuccess(true)
-      reset()
+      // Store submission data in sessionStorage for success page
+      sessionStorage.setItem('lastAssetRequest', JSON.stringify({
+        ...data,
+        employeeId,
+        requestDate: new Date().toISOString(),
+        requestId: 'REQ-' + Date.now().toString().slice(-8)
+      }))
       
-      // Auto-hide success message after 5 seconds
-      setTimeout(() => setSubmitSuccess(false), 5000)
+      // Redirect to success page
+      router.push('/front-pages/shortcuts/assets/request/success')
+      
     } catch (error) {
       console.error('Error submitting request:', error)
+      // Show error message instead of redirecting
+      setSubmitSuccess(false)
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const generateDummyData = () => {
+    const dummyDataTemplates = [
+      {
+        assetName: 'Centrifugal Pump Model CP-2500',
+        primaryCategory: 'Production Equipment',
+        subCategory: 'Pumps & Compressors',
+        assetType: 'Fixed Asset',
+        brand: 'Grundfos',
+        model: 'CR 64-2-2 A-F-A-E-HQQE',
+        quantity: '2',
+        unitPrice: '85000000',
+        totalBudget: '170000000',
+        priority: 'high',
+        department: 'Operations',
+        requestedFor: 'Refinery Unit 2 Upgrade Project',
+        location: 'Refinery - Cilacap',
+        supplier: 'PT Grundfos Pompa Indonesia',
+        warrantyPeriod: '2 years',
+        maintenanceRequirement: 'Quarterly inspection and annual overhaul',
+        justification: 'Current pump is experiencing frequent breakdowns causing production delays. New pump will improve reliability and reduce maintenance costs by 30%. Critical for maintaining production targets.',
+        expectedDate: '2024-12-15',
+        urgencyReason: 'Production line shutdown risk if current pump fails completely',
+        technicalSpecs: 'Flow rate: 250 m³/h, Head: 120 m, Power: 75 kW, Material: Stainless Steel 316L, Temperature range: -20°C to +120°C',
+        complianceRequirements: 'API 610 standard, ATEX certification for hazardous area, ISO 9001 quality certification',
+        environmentalConsiderations: 'Energy efficient design with IE3 motor, reduced noise levels <85dB, recyclable materials'
+      },
+      {
+        assetName: 'Industrial Safety Gas Detector System',
+        primaryCategory: 'Safety Equipment',
+        subCategory: 'Gas Detection Systems',
+        assetType: 'Fixed Asset',
+        brand: 'Honeywell',
+        model: 'Sensepoint XCD RTD',
+        quantity: '15',
+        unitPrice: '12500000',
+        totalBudget: '187500000',
+        priority: 'urgent',
+        department: 'Security',
+        requestedFor: 'Plant Safety Upgrade Initiative',
+        location: 'Refinery - Balikpapan',
+        supplier: 'PT Honeywell Indonesia',
+        warrantyPeriod: '3 years',
+        maintenanceRequirement: 'Monthly calibration and sensor replacement every 2 years',
+        justification: 'Mandatory safety upgrade required by regulatory compliance. Current system is outdated and does not meet new safety standards. Will prevent potential gas leak incidents and ensure worker safety.',
+        expectedDate: '2024-11-30',
+        urgencyReason: 'Regulatory deadline approaching, non-compliance will result in operational shutdown',
+        technicalSpecs: 'Detection range: 0-100% LEL, Response time: <30 seconds, Operating temp: -40°C to +75°C, IP66 rating, 4-20mA output',
+        complianceRequirements: 'SIL 2 certified, ATEX Zone 1 approval, IECEx certification, local regulatory compliance',
+        environmentalConsiderations: 'Low power consumption, RoHS compliant, minimal environmental impact during operation'
+      },
+      {
+        assetName: 'High-Performance Workstation for Engineering',
+        primaryCategory: 'IT & Telecommunications',
+        subCategory: 'Workstations & Computers',
+        assetType: 'Fixed Asset',
+        brand: 'Dell',
+        model: 'Precision 7760 Mobile Workstation',
+        quantity: '5',
+        unitPrice: '45000000',
+        totalBudget: '225000000',
+        priority: 'medium',
+        department: 'IT & Technology',
+        requestedFor: 'CAD Design Team Upgrade',
+        location: 'Head Office - Jakarta',
+        supplier: 'PT Dell Indonesia',
+        warrantyPeriod: '3 years',
+        maintenanceRequirement: 'Annual hardware check and software updates',
+        justification: 'Current workstations are 5 years old and cannot handle new CAD software requirements. New workstations will improve design productivity by 40% and support latest engineering applications.',
+        expectedDate: '2025-01-31',
+        urgencyReason: '',
+        technicalSpecs: 'Intel Core i9-11950H, 32GB DDR4 RAM, 1TB NVMe SSD, NVIDIA RTX A4000 8GB, 17.3" 4K display, Windows 11 Pro',
+        complianceRequirements: 'Energy Star certified, EPEAT Gold rating, corporate security standards compliance',
+        environmentalConsiderations: 'Energy efficient components, recyclable packaging, EPEAT environmental certification'
+      }
+    ]
+
+    // Randomly select one template
+    const template = dummyDataTemplates[Math.floor(Math.random() * dummyDataTemplates.length)]
+    
+    // Set all form values
+    Object.keys(template).forEach(key => {
+      setValue(key, template[key])
+    })
+
+    // Update state variables for dependent dropdowns
+    setSelectedPrimaryCategory(template.primaryCategory)
+    setSelectedSubCategory(template.subCategory)
+    
+    // Update available asset types based on selected sub category
+    if (subCategoryToAssetTypes[template.subCategory]) {
+      setAvailableAssetTypes(subCategoryToAssetTypes[template.subCategory])
     }
   }
 
@@ -1164,28 +1270,39 @@ const AssetRequestView = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Box className='flex gap-4 justify-end'>
+                  <Box className='flex gap-4 justify-between'>
                     <Button
                       variant='outlined'
-                      color='secondary'
-                      onClick={() => reset()}
+                      color='info'
+                      onClick={generateDummyData}
                       disabled={isSubmitting}
+                      startIcon={<i className='ri-magic-line' />}
                     >
-                      Reset Form
+                      Generate Dummy Data
                     </Button>
-                    <Button
-                      type='submit'
-                      variant='contained'
-                      color='primary'
-                      disabled={isSubmitting}
-                      startIcon={
-                        isSubmitting ? 
-                        <i className='ri-loader-line animate-spin' /> : 
-                        <i className='ri-send-plane-line' />
-                      }
-                    >
-                      {isSubmitting ? 'Submitting...' : 'Submit Request'}
-                    </Button>
+                    <Box className='flex gap-4'>
+                      <Button
+                        variant='outlined'
+                        color='secondary'
+                        onClick={() => reset()}
+                        disabled={isSubmitting}
+                      >
+                        Reset Form
+                      </Button>
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        color='primary'
+                        disabled={isSubmitting}
+                        startIcon={
+                          isSubmitting ? 
+                          <i className='ri-loader-line animate-spin' /> : 
+                          <i className='ri-send-plane-line' />
+                        }
+                      >
+                        {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                      </Button>
+                    </Box>
                   </Box>
                 </Grid>
               </Grid>
