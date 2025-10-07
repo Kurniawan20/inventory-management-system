@@ -187,7 +187,7 @@ const AnomalyDetectionView = ({ data }) => {
                 return (
                   <TimelineItem key={index}>
                     <TimelineSeparator>
-                      <TimelineDot color={severityConfig.color}>
+                      <TimelineDot sx={{ bgcolor: `${severityConfig.color}.main` }}>
                         <i className={getAnomalyTypeIcon(anomaly.anomaly_type)} />
                       </TimelineDot>
                       {index < 4 && <TimelineConnector />}

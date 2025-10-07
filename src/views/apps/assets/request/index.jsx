@@ -26,6 +26,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import { object, string, pipe, nonEmpty, minLength } from 'valibot'
 
+// Utils Imports
+import { assetRequestStorage } from '@/utils/assetRequestStorage'
+
 const schema = object({
   assetName: pipe(string(), nonEmpty('Asset name is required')),
   primaryCategory: pipe(string(), nonEmpty('Primary category is required')),
@@ -342,19 +345,21 @@ const AssetRequestView = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000))
       
-      console.log('Asset Request Submitted:', {
-        ...data,
-        employeeId,
-        requestDate: new Date().toISOString()
-      })
-      
-      // Store submission data in sessionStorage for success page
-      sessionStorage.setItem('lastAssetRequest', JSON.stringify({
+      const requestId = 'REQ-' + Date.now().toString().slice(-8)
+      const requestData = {
         ...data,
         employeeId,
         requestDate: new Date().toISOString(),
-        requestId: 'REQ-' + Date.now().toString().slice(-8)
-      }))
+        requestId
+      }
+      
+      console.log('Asset Request Submitted:', requestData)
+      
+      // Store in localStorage for tracking
+      const storedRequest = assetRequestStorage.add(requestData)
+      
+      // Store submission data in sessionStorage for success page
+      sessionStorage.setItem('lastAssetRequest', JSON.stringify(storedRequest))
       
       // Redirect to success page
       router.push('/front-pages/shortcuts/assets/request/success')

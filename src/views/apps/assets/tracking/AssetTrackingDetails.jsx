@@ -440,7 +440,7 @@ const AssetTrackingDetails = () => {
                     {new Date(location.movedDate).toLocaleDateString('id-ID')}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
-                    <TimelineDot color='primary' />
+                    <TimelineDot sx={{ bgcolor: 'primary.main' }} />
                     {index < assetData.locationHistory.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
                   <TimelineContent>

@@ -1,5 +1,5 @@
 // Component Imports
-import AssetTrackingList from '@views/apps/assets/tracking/AssetTrackingList'
+import AssetTrackingTabs from '@views/apps/assets/tracking/AssetTrackingTabs'
 
 // Server Action Imports
 import { getServerMode } from '@core/utils/serverHelpers'
@@ -8,7 +8,7 @@ const AssetTrackingPage = () => {
   // Vars
   const mode = getServerMode()
 
-  return <AssetTrackingList />
+  return <AssetTrackingTabs />
 }
 
 export default AssetTrackingPage

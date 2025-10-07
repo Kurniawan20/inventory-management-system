@@ -29,11 +29,16 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Collapse from '@mui/material/Collapse'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 // Third-party Imports
 import { Controller, useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import { object, string, pipe, nonEmpty } from 'valibot'
+
+// Utils Imports
+import { assetRequestStorage } from '@/utils/assetRequestStorage'
 
 const schema = object({
   searchQuery: pipe(string(), nonEmpty('Please enter asset ID, barcode, or name to search'))
@@ -47,6 +52,7 @@ const AssetTrackingView = () => {
   const [selectedAsset, setSelectedAsset] = useState(null)
   const [detailsOpen, setDetailsOpen] = useState(false)
   const [expandedRows, setExpandedRows] = useState(new Set())
+  const [searchType, setSearchType] = useState('assets') // 'assets' or 'requests'
 
   const {
     control,
@@ -78,8 +84,48 @@ const AssetTrackingView = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
       
-      // Enhanced mock search results with more detailed information
-      const mockResults = [
+      if (searchType === 'requests') {
+        // Search asset requests from localStorage
+        const allRequests = assetRequestStorage.getAll()
+        const filteredRequests = allRequests.filter(request => 
+          request.requestId.toLowerCase().includes(data.searchQuery.toLowerCase()) ||
+          request.assetName.toLowerCase().includes(data.searchQuery.toLowerCase()) ||
+          request.employeeId.toLowerCase().includes(data.searchQuery.toLowerCase()) ||
+          request.department.toLowerCase().includes(data.searchQuery.toLowerCase())
+        )
+        
+        // Transform request data to match display format
+        const requestResults = filteredRequests.map(request => ({
+          id: request.requestId,
+          name: request.assetName,
+          barcode: request.requestId,
+          status: request.status,
+          location: `${request.department} - ${request.location}`,
+          assignedTo: `${request.employeeId} (${request.requestedFor})`,
+          lastUpdated: new Date(request.lastUpdated).toLocaleString('id-ID'),
+          condition: request.priority?.toUpperCase() || 'MEDIUM',
+          category: `${request.primaryCategory} - ${request.subCategory}`,
+          serialNumber: request.requestId,
+          purchaseDate: new Date(request.submittedAt).toLocaleDateString('id-ID'),
+          warrantyExpiry: request.expectedDate,
+          value: `Rp ${parseInt(request.totalBudget).toLocaleString('id-ID')}`,
+          department: request.department,
+          maintenanceSchedule: request.expectedDate,
+          notes: request.justification || 'Asset request submitted via shortcut form',
+          requestType: 'Asset Request',
+          priority: request.priority,
+          brand: request.brand,
+          model: request.model,
+          quantity: request.quantity,
+          supplier: request.supplier,
+          approvalStage: request.approvalStage,
+          statusHistory: request.statusHistory
+        }))
+        
+        setSearchResults(requestResults)
+      } else {
+        // Enhanced mock search results with more detailed information
+        const mockResults = [
         {
           id: 'AST-001',
           name: 'Dell Laptop OptiPlex 7090',
@@ -143,6 +189,7 @@ const AssetTrackingView = () => {
       )
       
       setSearchResults(mockResults)
+      }
     } catch (error) {
       console.error('Error searching assets:', error)
       setSearchResults([])
@@ -208,18 +255,41 @@ const AssetTrackingView = () => {
               </Box>
             }
             subheader={
-              <Box className='flex items-center gap-2 mt-2'>
+              <Box className='flex flex-col gap-2 mt-2'>
                 <Typography variant='body2' color='text.secondary'>
-                  Search and track assets by ID, barcode, or name
+                  Search and track assets or asset requests by ID, barcode, or name
                 </Typography>
-                {employeeId && (
-                  <Chip 
-                    label={`Employee ID: ${employeeId}`} 
-                    size='small' 
-                    color='primary' 
-                    variant='outlined'
-                  />
-                )}
+                <Box className='flex items-center gap-2'>
+                  {employeeId && (
+                    <Chip 
+                      label={`Employee ID: ${employeeId}`} 
+                      size='small' 
+                      color='primary' 
+                      variant='outlined'
+                    />
+                  )}
+                  <ToggleButtonGroup
+                    value={searchType}
+                    exclusive
+                    onChange={(event, newSearchType) => {
+                      if (newSearchType !== null) {
+                        setSearchType(newSearchType)
+                        setSearchResults([])
+                        setHasSearched(false)
+                      }
+                    }}
+                    size='small'
+                  >
+                    <ToggleButton value='assets'>
+                      <i className='ri-qr-scan-line mr-1' />
+                      Assets
+                    </ToggleButton>
+                    <ToggleButton value='requests'>
+                      <i className='ri-file-list-line mr-1' />
+                      Requests
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
               </Box>
             }
           />
@@ -236,8 +306,8 @@ const AssetTrackingView = () => {
                         {...field}
                         fullWidth
                         size='medium'
-                        label='Search Assets'
-                        placeholder='Enter Asset ID, Barcode, or Asset Name'
+                        label={searchType === 'requests' ? 'Search Asset Requests' : 'Search Assets'}
+                        placeholder={searchType === 'requests' ? 'Enter Request ID, Asset Name, or Employee ID' : 'Enter Asset ID, Barcode, or Asset Name'}
                         error={!!errors.searchQuery}
                         helperText={errors.searchQuery?.message}
                         InputProps={{
@@ -277,7 +347,7 @@ const AssetTrackingView = () => {
                     }
                     sx={{ height: '56px' }}
                   >
-                    {isSearching ? 'Searching...' : 'Search Assets'}
+                    {isSearching ? 'Searching...' : (searchType === 'requests' ? 'Search Requests' : 'Search Assets')}
                   </Button>
                 </Grid>
               </Grid>
@@ -291,7 +361,7 @@ const AssetTrackingView = () => {
                   <>
                     <Alert severity='success' className='mb-4'>
                       <Typography variant='body2' fontWeight='medium'>
-                        ✅ Search Successful! Found {searchResults.length} asset{searchResults.length > 1 ? 's' : ''} matching your inquiry.
+                        ✅ Search Successful! Found {searchResults.length} {searchType === 'requests' ? 'request' : 'asset'}{searchResults.length > 1 ? 's' : ''} matching your inquiry.
                       </Typography>
                       <Typography variant='body2' color='text.secondary'>
                         Inquiry processed by Employee ID: {employeeId} at {new Date().toLocaleString()}
@@ -299,19 +369,19 @@ const AssetTrackingView = () => {
                     </Alert>
                     
                     <Typography variant='h6' className='mb-4'>
-                      Asset Inquiry Results ({searchResults.length} found)
+                      {searchType === 'requests' ? 'Asset Request' : 'Asset'} Inquiry Results ({searchResults.length} found)
                     </Typography>
                     <TableContainer component={Paper} variant='outlined'>
                       <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell></TableCell>
-                            <TableCell>Asset ID</TableCell>
-                            <TableCell>Asset Name</TableCell>
+                            <TableCell>{searchType === 'requests' ? 'Request ID' : 'Asset ID'}</TableCell>
+                            <TableCell>{searchType === 'requests' ? 'Requested Asset' : 'Asset Name'}</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell>Location</TableCell>
-                            <TableCell>Assigned To</TableCell>
-                            <TableCell>Condition</TableCell>
+                            <TableCell>{searchType === 'requests' ? 'Requestor' : 'Assigned To'}</TableCell>
+                            <TableCell>{searchType === 'requests' ? 'Priority' : 'Condition'}</TableCell>
                             <TableCell>Actions</TableCell>
                           </TableRow>
                         </TableHead>
@@ -427,10 +497,14 @@ const AssetTrackingView = () => {
                 ) : (
                   <Alert severity='warning'>
                     <Typography variant='body2' fontWeight='medium'>
-                      ❌ No Assets Found
+                      ❌ No {searchType === 'requests' ? 'Requests' : 'Assets'} Found
                     </Typography>
                     <Typography variant='body2'>
-                      No assets found matching your search criteria "{searchQuery}". Please verify the Asset ID, Barcode, or Name and try again.
+                      No {searchType === 'requests' ? 'asset requests' : 'assets'} found matching your search criteria "{searchQuery}". 
+                      {searchType === 'requests' 
+                        ? ' Please verify the Request ID, Asset Name, or Employee ID and try again.' 
+                        : ' Please verify the Asset ID, Barcode, or Name and try again.'
+                      }
                     </Typography>
                   </Alert>
                 )}
@@ -441,10 +515,13 @@ const AssetTrackingView = () => {
               <Box className='mt-6 p-6 bg-gray-50 rounded-lg text-center'>
                 <i className='ri-search-line text-4xl text-gray-400 mb-2' />
                 <Typography variant='h6' color='text.secondary' className='mb-2'>
-                  Start Asset Tracking
+                  Start {searchType === 'requests' ? 'Request' : 'Asset'} Tracking
                 </Typography>
                 <Typography variant='body2' color='text.secondary'>
-                  Enter an Asset ID, Barcode, or Asset Name to begin tracking
+                  {searchType === 'requests' 
+                    ? 'Enter a Request ID, Asset Name, or Employee ID to track your asset requests'
+                    : 'Enter an Asset ID, Barcode, or Asset Name to begin tracking'
+                  }
                 </Typography>
               </Box>
             )}

@@ -525,7 +525,7 @@ const AssetReturnsDetails = () => {
                     {new Date(item.date).toLocaleString('id-ID')}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
-                    <TimelineDot color={getStatusColor(item.status)} />
+                    <TimelineDot sx={{ bgcolor: `${getStatusColor(item.status)}.main` }} />
                     {index < returnData.returnHistory.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
                   <TimelineContent>

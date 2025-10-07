@@ -353,7 +353,7 @@ const AssetRequestDetails = () => {
                     {item.date}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
-                    <TimelineDot color={getStatusColor(item.status)} />
+                    <TimelineDot sx={{ bgcolor: `${getStatusColor(item.status)}.main` }} />
                     {index < requestData.approvalHistory.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
                   <TimelineContent>
